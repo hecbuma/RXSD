@@ -1,6 +1,9 @@
 GEM_NAME="rxsd"
 PKG_VERSION='0.5.3'
 
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
 Gem::Specification.new do |s|
   s.name = GEM_NAME
   s.version = PKG_VERSION
@@ -12,7 +15,12 @@ Gem::Specification.new do |s|
 
   s.add_dependency('libxml-ruby', '~> 2.8.0')
   s.add_dependency('activesupport', '>= 3.2')
-  s.add_development_dependency('rspec', '~> 2.12.0')
+  s.add_development_dependency "rspec", '~> 3.4.0'
+  s.add_development_dependency "guard"
+  s.add_development_dependency "guard-rspec"
+  s.add_development_dependency "pry"
+  s.add_development_dependency "pry-remote"
+  s.add_development_dependency "pry-nav"
 
   s.author = "Mo Morsi"
   s.email = "mo@morsi.org"

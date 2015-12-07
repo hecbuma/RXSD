@@ -17,11 +17,11 @@ describe "Builder" do
     schema.elements = [elem1, elem2]
     class_builders = schema.to_class_builders
 
-    class_builders.size.should == 2
-    class_builders[0].class.should == ClassBuilder
-    class_builders[0].instance_variable_get("@xsd_obj").should == elem1
-    class_builders[1].class.should == ClassBuilder
-    class_builders[1].instance_variable_get("@xsd_obj").should == elem2
+    expect(class_builders.size).to eq(2)
+    expect(class_builders[0].class).to eq(ClassBuilder)
+    expect(class_builders[0].instance_variable_get("@xsd_obj")).to eq(elem1)
+    expect(class_builders[1].class).to eq(ClassBuilder)
+    expect(class_builders[1].instance_variable_get("@xsd_obj")).to eq(elem2)
   end
 
   it "should return element class builders" do
@@ -33,36 +33,36 @@ describe "Builder" do
     element.name = "foo_element"
     element.ref = elem1
     cb = element.to_class_builder
-    cb.class.should == ClassBuilder
-    cb.instance_variable_get("@xsd_obj").should == elem1
-    cb.klass_name.should == "FooElement"
+    expect(cb.class).to eq(ClassBuilder)
+    expect(cb.instance_variable_get("@xsd_obj")).to eq(elem1)
+    expect(cb.klass_name).to eq("FooElement")
 
     # FIXME the next two 'type' test cases need to be fixed / expanded
     element = Element.new
     element.name = "bar_element"
     element.type = st1
     cb = element.to_class_builder
-    cb.class.should == ClassBuilder
+    expect(cb.class).to eq(ClassBuilder)
     #cb.instance_variable_get("@xsd_obj").should == st1     TODO since clone is invoked, @xsd_obj test field never gets copied, fix this
-    cb.klass_name.should == "BarElement"
+    expect(cb.klass_name).to eq("BarElement")
 
     element = Element.new
     element.type = ct1
     cb = element.to_class_builder
-    cb.class.should == ClassBuilder
+    expect(cb.class).to eq(ClassBuilder)
     #cb.instance_variable_get("@xsd_obj").should == ct1
 
     element = Element.new
     element.simple_type = st1
     cb = element.to_class_builder
-    cb.class.should == ClassBuilder
-    cb.instance_variable_get("@xsd_obj").should == st1
+    expect(cb.class).to eq(ClassBuilder)
+    expect(cb.instance_variable_get("@xsd_obj")).to eq(st1)
 
     element = Element.new
     element.complex_type = ct1
     cb = element.to_class_builder
-    cb.class.should == ClassBuilder
-    cb.instance_variable_get("@xsd_obj").should == ct1
+    expect(cb.class).to eq(ClassBuilder)
+    expect(cb.instance_variable_get("@xsd_obj")).to eq(ct1)
   end
 
   # FIXME test other XSD classes' to_class_builder methods
@@ -81,21 +81,21 @@ describe "Builder" do
      c.attribute_builders.push at2
 
      ab = c.associated
-     ab.size.should == 5
+     expect(ab.size).to eq(5)
   end
 
   it "should build class" do
      cb1 = RubyClassBuilder.new :klass => String, :klass_name => "Widget"
-     cb1.build.should == String
+     expect(cb1.build).to eq(String)
 
      cb2 = RubyClassBuilder.new :klass_name => "Foobar"
      c2 = cb2.build
-     c2.should == Foobar
-     c2.superclass.should == Object
+     expect(c2).to eq(Foobar)
+     expect(c2.superclass).to eq(Object)
 
      acb = RubyClassBuilder.new :klass => Array, :klass_name => "ArrSocket", :associated_builder => cb1
      ac = acb.build
-     ac.should == Array
+     expect(ac).to eq(Array)
 
      tcb = RubyClassBuilder.new :klass_name => "CamelCased"
 
@@ -104,34 +104,34 @@ describe "Builder" do
      cb3.attribute_builders.push tcb
      cb3.attribute_builders.push acb
      c3 = cb3.build
-     c3.should == Foomoney
-     c3.superclass.should == Foobar
+     expect(c3).to eq(Foomoney)
+     expect(c3.superclass).to eq(Foobar)
      c3i = c3.new
-     c3i.method(:widget).should_not be_nil
-     c3i.method(:widget).arity.should == 0
-     c3i.method(:widget=).should_not be_nil
-     c3i.method(:widget=).arity.should == 1
-     c3i.method(:camel_cased).should_not be_nil
-     c3i.method(:camel_cased).arity.should == 0
-     c3i.method(:camel_cased=).should_not be_nil
-     c3i.method(:camel_cased=).arity.should == 1
-     c3i.method(:arr_socket).should_not be_nil
-     c3i.method(:arr_socket).arity.should == 0
-     c3i.method(:arr_socket=).should_not be_nil
-     c3i.method(:arr_socket=).arity.should == 1
+     expect(c3i.method(:widget)).not_to be_nil
+     expect(c3i.method(:widget).arity).to eq(0)
+     expect(c3i.method(:widget=)).not_to be_nil
+     expect(c3i.method(:widget=).arity).to eq(1)
+     expect(c3i.method(:camel_cased)).not_to be_nil
+     expect(c3i.method(:camel_cased).arity).to eq(0)
+     expect(c3i.method(:camel_cased=)).not_to be_nil
+     expect(c3i.method(:camel_cased=).arity).to eq(1)
+     expect(c3i.method(:arr_socket)).not_to be_nil
+     expect(c3i.method(:arr_socket).arity).to eq(0)
+     expect(c3i.method(:arr_socket=)).not_to be_nil
+     expect(c3i.method(:arr_socket=).arity).to eq(1)
   end
 
   it "should build definition" do
      cb1 = RubyDefinitionBuilder.new :klass => String, :klass_name => "Widget"
-     cb1.build.should == "class String\nend"
+     expect(cb1.build).to eq("class String\nend")
 
      cb2 = RubyDefinitionBuilder.new :klass_name => "Foobar"
      d2 = cb2.build
-     d2.should == "class Foobar < Object\nend"
+     expect(d2).to eq("class Foobar < Object\nend")
 
      acb = RubyDefinitionBuilder.new :klass => Array, :klass_name => "ArrSocket", :associated_builder => cb1
      ad = acb.build
-     ad.should == "class Array\nend"
+     expect(ad).to eq("class Array\nend")
 
      tcb = RubyDefinitionBuilder.new :klass_name => "CamelCased"
 
@@ -140,11 +140,11 @@ describe "Builder" do
      cb3.attribute_builders.push tcb
      cb3.attribute_builders.push acb
      d3 = cb3.build
-     d3.should == "class Foomoney < Foobar\n" +
+     expect(d3).to eq("class Foomoney < Foobar\n" +
                   "attr_accessor :widget\n" +
                   "attr_accessor :camel_cased\n" +
                   "attr_accessor :arr_socket\n" +
-                  "end"
+                  "end")
   end
 
   it "should build object" do
@@ -167,10 +167,10 @@ describe "Builder" do
      rob = RubyObjectBuilder.new :tag_name => "Godzilla", :content => "some stuff", :attributes => { "first_attr" => "first_val", "SecondAttr" => "420" }
      obj = rob.build schema
 
-     obj.class.should == Godzilla
-     obj.should == "some stuff"  # since obj derives from string
-     obj.first_attr.should == "first_val"
-     obj.second_attr.should == 420
+     expect(obj.class).to eq(Godzilla)
+     expect(obj).to eq("some stuff")  # since obj derives from string
+     expect(obj.first_attr).to eq("first_val")
+     expect(obj.second_attr).to eq(420)
 
 
      schema_data = "<schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>" +
@@ -206,12 +206,12 @@ describe "Builder" do
 
      obj = rob.build schema
 
-     obj.class.should == Employee
-     obj.ssn.should == "111-22-3333"
-     obj.residency.should == "citizen"
-     obj.firstname.should == "mo"
-     obj.lastname.should == "morsi"
-     obj.country.should == "USA"
+     expect(obj.class).to eq(Employee)
+     expect(obj.ssn).to eq("111-22-3333")
+     expect(obj.residency).to eq("citizen")
+     expect(obj.firstname).to eq("mo")
+     expect(obj.lastname).to eq("morsi")
+     expect(obj.country).to eq("USA")
   end
 end
 

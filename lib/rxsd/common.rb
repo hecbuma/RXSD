@@ -26,14 +26,14 @@ module RXSD
            unless defined? @@logger
              @@logger = ::Logger.new(STDOUT)
              @@logger.level = LOG_LEVEL
-           end 
-        end 
+           end
+        end
 
       public
         def self.method_missing(method_id, *args)
            _instantiate_logger
            @@logger.send(method_id, args)
-        end 
+        end
         def self.logger
            _instantiate_logger
            @@logger

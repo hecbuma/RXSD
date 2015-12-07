@@ -22,3 +22,5 @@ log/*.*
 *.swp
 *.swo
 *~
+/tags
+/xsd

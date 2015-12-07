@@ -10,13 +10,13 @@ describe "Loader" do
   it "should load file" do
      File.write("/tmp/rxsd-test", "foobar")
      data = RXSD::Loader.load("file:///tmp/rxsd-test")
-     data.should == "foobar"
+     expect(data).to eq("foobar")
   end
 
   it "should load http uri" do
      # uploaded a minimal test to projects.morsi.org
      data = RXSD::Loader.load("http://projects.morsi.org/rxsd/test-schema1.xsd")
-     data.should == "foobar\n"
+     expect(data).to eq("foobar\n")
   end
 
 end

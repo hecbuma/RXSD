@@ -10,38 +10,38 @@ describe "RXSD Types" do
   # FIXME DateTime
 
   it "should convert string to/from bool" do
-     "true".to_b.should be_true
-     "false".to_b.should be_false
-     lambda {
+     expect("true".to_b).to be_truthy
+     expect("false".to_b).to be_falsey
+     expect {
         "foobar".to_b
-     }.should raise_error(ArgumentError)
+     }.to raise_error(ArgumentError)
 
-     String.from_s("money").should == "money"
+     expect(String.from_s("money")).to eq("money")
   end
 
   it "should convert bool to/from string" do
-     Boolean.from_s("true").should be_true
-     Boolean.from_s("false").should be_false
+     expect(Boolean.from_s("true")).to be_truthy
+     expect(Boolean.from_s("false")).to be_falsey
   end
 
   it "should convert char to/from string" do
-     Char.from_s("c").should == "c"
+     expect(Char.from_s("c")).to eq("c")
   end
 
   it "should convert int to/from string" do
-     XSDInteger.from_s("123").should == 123
+     expect(XSDInteger.from_s("123")).to eq(123)
   end
 
   it "should convert float to/from string" do
-     XSDFloat.from_s("4.25").should == 4.25
+     expect(XSDFloat.from_s("4.25")).to eq(4.25)
   end
 
   it "should convert array to/from string" do
      arr = Array.from_s "4 9 50 123", XSDInteger
-     arr.size.should == 4
-     arr.include?(4).should be_true
-     arr.include?(9).should be_true
-     arr.include?(50).should be_true
-     arr.include?(123).should be_true
+     expect(arr.size).to eq(4)
+     expect(arr.include?(4)).to be_truthy
+     expect(arr.include?(9)).to be_truthy
+     expect(arr.include?(50)).to be_truthy
+     expect(arr.include?(123)).to be_truthy
   end
 end

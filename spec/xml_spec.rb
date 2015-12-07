@@ -9,7 +9,7 @@ describe "RXSD::XML" do
 
    it "should provide root node given adapter and xml data" do
       root_node = XML::Node.factory :backend => :libxml, :xml => "<schema/>"
-      root_node.is_a?(XML::LibXMLNode).should be_true
+      expect(root_node.is_a?(XML::LibXMLNode)).to be_truthy
    end
 
    it "should return correct root node" do
@@ -17,13 +17,13 @@ describe "RXSD::XML" do
        parent = MockXMLNode.new
        gp = MockXMLNode.new
 
-       child.root.should == child
+       expect(child.root).to eq(child)
        child.test_parent = parent
-       child.root.should == parent
-       parent.root.should == parent
+       expect(child.root).to eq(parent)
+       expect(parent.root).to eq(parent)
        parent.test_parent = gp
-       child.root.should == gp
-       parent.root.should == gp
+       expect(child.root).to eq(gp)
+       expect(parent.root).to eq(gp)
    end
 
    it "should instantiate all children of a specified class type from xml" do
@@ -34,9 +34,9 @@ describe "RXSD::XML" do
        parent.children << child1 << child2 << child3
 
        children = parent.children_objs(MockXMLEntity)
-       children.size.should == 2
-       children[0].class.should == MockXMLEntity
-       children[1].class.should == MockXMLEntity
+       expect(children.size).to eq(2)
+       expect(children[0].class).to eq(MockXMLEntity)
+       expect(children[1].class).to eq(MockXMLEntity)
    end
 
    it "should return value attributes of all children w/ specified name" do
@@ -48,10 +48,10 @@ describe "RXSD::XML" do
        parent.children << child1 << child2 << child3
 
        children = parent.child_values(MockXMLEntity.tag_name)
-       children.size.should == 3
-       children[0].should == 'pi'
-       children[1].should == 'pi'
-       children[2].should == 'pi'
+       expect(children.size).to eq(3)
+       expect(children[0]).to eq('pi')
+       expect(children[1]).to eq('pi')
+       expect(children[2]).to eq('pi')
    end
 
 end
@@ -68,59 +68,59 @@ describe "RXSD::LibXMLAdapter" do
 
    it "should parse xml children" do
       root = XML::LibXMLNode.xml_root(@test_xml)
-      root.children.size.should == 2
-      root.children.each    { |c| c.class.should == XML::LibXMLNode }
-      root.children.collect { |c| c.name }.include?("entity").should be_true
-      root.children.collect { |c| c.name }.include?("other_entity").should be_true
-      root.children.collect { |c| c.name }.include?("foo_entity").should be_false
+      expect(root.children.size).to eq(2)
+      root.children.each    { |c| expect(c.class).to eq(XML::LibXMLNode) }
+      expect(root.children.collect { |c| c.name }.include?("entity")).to be_truthy
+      expect(root.children.collect { |c| c.name }.include?("other_entity")).to be_truthy
+      expect(root.children.collect { |c| c.name }.include?("foo_entity")).to be_falsey
 
-      root.children[0].children.size.should == 1
-      root.children[1].children.size.should == 0
+      expect(root.children[0].children.size).to eq(1)
+      expect(root.children[1].children.size).to eq(0)
    end
 
    it "should parse xml names" do
       root = XML::LibXMLNode.xml_root(@test_xml)
-      root.name.should == "schema"
-      root.children[0].name.should == "entity"
-      root.children[1].name.should == "other_entity"
-      root.children[0].children[0].name.should == "child"
+      expect(root.name).to eq("schema")
+      expect(root.children[0].name).to eq("entity")
+      expect(root.children[1].name).to eq("other_entity")
+      expect(root.children[0].children[0].name).to eq("child")
    end
 
    it "should parse xml attributes" do
       root = XML::LibXMLNode.xml_root(@test_xml)
-      root.children[0].attrs.should == {'some_attr' => 'foo', 'another_attr' => 'bar'}
-      root.children[0].children[0].attrs.should == {'child_attr' => '123' }
+      expect(root.children[0].attrs).to eq({'some_attr' => 'foo', 'another_attr' => 'bar'})
+      expect(root.children[0].children[0].attrs).to eq({'child_attr' => '123' })
    end
 
    it "should identify and return parent" do
       root = XML::LibXMLNode.xml_root(@test_xml)
 
-      root.parent?.should be_false
-      root.parent.should be_nil
+      expect(root.parent?).to be_falsey
+      expect(root.parent).to be_nil
 
-      root.children[0].parent?.should be_true
-      root.children[0].parent.should == root
+      expect(root.children[0].parent?).to be_truthy
+      expect(root.children[0].parent).to eq(root)
 
-      root.children[1].parent?.should be_true
-      root.children[1].parent.should == root
+      expect(root.children[1].parent?).to be_truthy
+      expect(root.children[1].parent).to eq(root)
 
-      root.children[0].children[0].parent?.should be_true
-      root.children[0].children[0].parent.should == root.children[0]
+      expect(root.children[0].children[0].parent?).to be_truthy
+      expect(root.children[0].children[0].parent).to eq(root.children[0])
    end
 
    it "should identify text and return content" do
       root = XML::LibXMLNode.xml_root(@test_xml)
-      root.children[0].text?.should be_false
-      root.children[1].text?.should be_true
-      root.children[0].children[0].text?.should be_false
+      expect(root.children[0].text?).to be_falsey
+      expect(root.children[1].text?).to be_truthy
+      expect(root.children[0].children[0].text?).to be_falsey
 
-      root.children[1].content.should  == "some text"
+      expect(root.children[1].content).to  eq("some text")
    end
 
    it "should return namespaces" do
       root = XML::LibXMLNode.xml_root(@test_xml)
-      root.namespaces.size.should == 2
-      root.namespaces.collect { |ns| ns.to_s }.include?('h:http://test.host/ns.xml').should be_true
+      expect(root.namespaces.size).to eq(2)
+      expect(root.namespaces.collect { |ns| ns.to_s }.include?('h:http://test.host/ns.xml')).to be_truthy
       #root.children[0].namespaces.size.should == 0 # children share the namespace apparently
    end
 

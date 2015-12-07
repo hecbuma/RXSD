@@ -106,8 +106,9 @@ class Restriction
        # convert restriction to builder
        if Parser.is_builtin? @base
          @class_builder.base = @base
-       elsif !@base.nil?
-         @class_builder.base_builder = @base.to_class_builder
+       elsif Parser.has_builtin_mapping? @base
+         parsed = Parser.parse_builtin_type @base
+         @class_builder.base_builder = parsed.to_class_builder
        end
 
        unless @group.nil?

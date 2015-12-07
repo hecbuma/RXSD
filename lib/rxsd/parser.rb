@@ -51,79 +51,68 @@ class Parser
     [Array, String, Boolean, Char, Time, XSDFloat, XSDInteger].include? builtin_class
   end
 
+  def self.has_builtin_mapping?(builtin_type_name)
+    !self.parse_builtin_type(builtin_type_name).nil?
+  end
+
   # Return ruby class corresponding to builtin type
   def self.parse_builtin_type(builtin_type_name)
     res = nil
 
-    case builtin_type_name
-      when "xs:string" then
+    case builtin_type_name.gsub(/^.*\:/, '')
+      when "string"
         res = String
-      when "xs:boolean" then
+      when "boolean"
         res = Boolean
-      when "xs:decimal" then
+      when "decimal"
         res = XSDFloat
-      when "xs:float" then
+      when "float"
         res = XSDFloat
-      when "xs:double" then
+      when "double"
         res = XSDFloat
-      when "xs:duration" then
-      when "xs:dateTime" then
+      when "duration", "dateTime"
         res = Time
-      when "xs:date" then
+      when "date"
         res = Time
-      when "xs:gYearMonth" then
+      when "gYearMonth"
         res = Time
-      when "xs:gYear" then
+      when "gYear"
         res = Time
-      when "xs:gMonthDay" then
+      when "gMonthDay"
         res = Time
-      when "xs:gDay" then
+      when "gDay"
         res = Time
-      when "xs:gMonth" then
+      when "gMonth"
         res = Time
-      when "xs:hexBinary" then
-      when "xs:base64Binary" then
-      when "xs:anyURI" then
-      when "xs:QName" then
-      when "xs:NOTATION" then
-      when "xs:normalizedString"
-      when "xs:token"
+      when "hexBinary" , "base64Binary" , "anyURI" , "QName",
+        "NOTATION", "normalizedString", "token"
          res = String # FIXME should be a string derived class, eliminating whitespace
-      when "xs:language"
-      when "xs:NMTOKEN"
-      when "xs:NMTOKENS"
-      when "xs:Name"
-      when "xs:NCName"
-      when "xs:ID"
-      when "xs:IDREF"
-      when "xs:IDREFS"
-      when "xs:ENTITY"
-      when "xs:ENTITIES"
-      when "xs:integer"
+      when "language", "NMTOKEN", "NMTOKENS", "Name", "NCName",
+        "ID", "IDREF", "IDREFS", "ENTITY", "ENTITIES", "integer"
          res = XSDInteger
-      when "xs:nonPositiveInteger"
+      when "nonPositiveInteger"
          res = XSDInteger
-      when "xs:negativeInteger"
+      when "negativeInteger"
          res = XSDInteger
-      when "xs:long"
+      when "long"
          res = XSDInteger
-      when "xs:int"
+      when "int"
          res = XSDInteger
-      when "xs:short"
+      when "short"
          res = XSDInteger
-      when "xs:byte"
+      when "byte"
          res = Char
-      when "xs:nonNegativeInteger"
+      when "nonNegativeInteger"
          res = XSDInteger
-      when "xs:unsignedLong"
+      when "unsignedLong"
          res = XSDInteger
-      when "xs:unsignedInt"
+      when "unsignedInt"
          res = XSDInteger
-      when "xs:unsignedShort"
+      when "unsignedShort"
          res = XSDInteger
-      when "xs:unsignedByte"
+      when "unsignedByte"
          res = Char
-      when "xs:positiveInteger"
+      when "positiveInteger"
          res = XSDInteger
     end
 

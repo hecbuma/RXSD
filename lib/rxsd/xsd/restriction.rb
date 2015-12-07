@@ -17,7 +17,7 @@ class Restriction
   attr_accessor :group, :choice, :sequence, :attributes, :attribute_groups, :simple_type
 
   # restrictions
-  attr_accessor :min_exclusive, :min_inclusive, :max_exclusive, :max_inclusive, 
+  attr_accessor :min_exclusive, :min_inclusive, :max_exclusive, :max_inclusive,
                 :total_digits, :fraction_digits, :length, :min_length, :max_length,
                 :enumerations, :whitespace, :pattern
 
@@ -103,7 +103,7 @@ class Restriction
      unless defined? @class_builder
        @class_builder = cb.nil? ? ClassBuilder.new : cb
 
-       # convert restriction to builder 
+       # convert restriction to builder
        if Parser.is_builtin? @base
          @class_builder.base = @base
        elsif !@base.nil?

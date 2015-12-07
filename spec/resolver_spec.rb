@@ -30,16 +30,16 @@ describe "Resolver" do
      schema.groups       = [grp1, grp2]
 
      children = schema.children
-     children.include?(elem1).should be_true
-     children.include?(elem2).should be_true
-     children.include?(st1).should be_true
-     children.include?(ct1).should be_true
-     children.include?(at1).should be_true
-     children.include?(at2).should be_true
-     children.include?(at3).should be_true
-     children.include?(atg1).should be_true
-     children.include?(grp1).should be_true
-     children.include?(grp2).should be_true
+     expect(children.include?(elem1)).to be_truthy
+     expect(children.include?(elem2)).to be_truthy
+     expect(children.include?(st1)).to be_truthy
+     expect(children.include?(ct1)).to be_truthy
+     expect(children.include?(at1)).to be_truthy
+     expect(children.include?(at2)).to be_truthy
+     expect(children.include?(at3)).to be_truthy
+     expect(children.include?(atg1)).to be_truthy
+     expect(children.include?(grp1)).to be_truthy
+     expect(children.include?(grp2)).to be_truthy
   end
 
   it "should return element children" do
@@ -50,8 +50,8 @@ describe "Resolver" do
      elem.complex_type = ct1
 
      children = elem.children
-     children.include?(st1).should be_true
-     children.include?(ct1).should be_true
+     expect(children.include?(st1)).to be_truthy
+     expect(children.include?(ct1)).to be_truthy
   end
 
   it "should return complex type children" do
@@ -73,13 +73,13 @@ describe "Resolver" do
      complex_type.sequence  = sequence
 
      children = complex_type.children
-     children.include?(at1).should be_true
-     children.include?(atg1).should be_true
-     children.include?(simple_content).should be_true
-     children.include?(complex_content).should be_true
-     children.include?(choice).should be_true
-     children.include?(group).should be_true
-     children.include?(sequence).should be_true
+     expect(children.include?(at1)).to be_truthy
+     expect(children.include?(atg1)).to be_truthy
+     expect(children.include?(simple_content)).to be_truthy
+     expect(children.include?(complex_content)).to be_truthy
+     expect(children.include?(choice)).to be_truthy
+     expect(children.include?(group)).to be_truthy
+     expect(children.include?(sequence)).to be_truthy
   end
 
   it "should return simple type children" do
@@ -91,8 +91,8 @@ describe "Resolver" do
      simple_type.restriction = res
 
      children = simple_type.children
-     children.include?(list).should be_true
-     children.include?(res).should be_true
+     expect(children.include?(list)).to be_truthy
+     expect(children.include?(res)).to be_truthy
   end
 
   it "should return attribute children" do
@@ -102,7 +102,7 @@ describe "Resolver" do
      att.simple_type = simple_type
 
      children = att.children
-     children.include?(simple_type).should be_true
+     expect(children.include?(simple_type)).to be_truthy
   end
 
   it "should return attribute group children" do
@@ -114,9 +114,9 @@ describe "Resolver" do
      atg.attribute_groups = [atg1]
      
      children = atg.children
-     children.include?(at1).should be_true
-     children.include?(at2).should be_true
-     children.include?(atg1).should be_true
+     expect(children.include?(at1)).to be_truthy
+     expect(children.include?(at2)).to be_truthy
+     expect(children.include?(atg1)).to be_truthy
   end
 
   it "should return group children" do
@@ -128,8 +128,8 @@ describe "Resolver" do
      grp.sequence = sequence
 
      children = grp.children
-     children.include?(choice).should be_true
-     children.include?(sequence).should be_true
+     expect(children.include?(choice)).to be_truthy
+     expect(children.include?(sequence)).to be_truthy
   end
 
   it "should return list children" do
@@ -139,7 +139,7 @@ describe "Resolver" do
      list.simple_type = simple_type
 
      children = list.children
-     children.include?(simple_type).should be_true
+     expect(children.include?(simple_type)).to be_truthy
   end
 
   it "should return simple content children" do
@@ -151,8 +151,8 @@ describe "Resolver" do
      simple_content.restriction = res
 
      children = simple_content.children
-     children.include?(ext).should be_true
-     children.include?(res).should be_true
+     expect(children.include?(ext)).to be_truthy
+     expect(children.include?(res)).to be_truthy
   end
 
   it "should return choice children" do
@@ -171,11 +171,11 @@ describe "Resolver" do
     choice.sequences = [sequence1]
 
     children = choice.children
-    children.include?(grp1).should be_true
-    children.include?(choice1).should be_true
-    children.include?(choice2).should be_true
-    children.include?(choice3).should be_true
-    children.include?(sequence1).should be_true
+    expect(children.include?(grp1)).to be_truthy
+    expect(children.include?(choice1)).to be_truthy
+    expect(children.include?(choice2)).to be_truthy
+    expect(children.include?(choice3)).to be_truthy
+    expect(children.include?(sequence1)).to be_truthy
   end
 
   it "should return complex content children" do
@@ -187,8 +187,8 @@ describe "Resolver" do
      complex_content.restriction = res
 
      children = complex_content.children
-     children.include?(ext).should be_true
-     children.include?(res).should be_true
+     expect(children.include?(ext)).to be_truthy
+     expect(children.include?(res)).to be_truthy
   end
 
   it "should return sequence children" do
@@ -207,11 +207,11 @@ describe "Resolver" do
     sequence.sequences = [sequence1]
 
     children = sequence.children
-    children.include?(grp1).should be_true
-    children.include?(choice1).should be_true
-    children.include?(choice2).should be_true
-    children.include?(choice3).should be_true
-    children.include?(sequence1).should be_true
+    expect(children.include?(grp1)).to be_truthy
+    expect(children.include?(choice1)).to be_truthy
+    expect(children.include?(choice2)).to be_truthy
+    expect(children.include?(choice3)).to be_truthy
+    expect(children.include?(sequence1)).to be_truthy
   end
 
   it "should return extension children" do
@@ -229,11 +229,11 @@ describe "Resolver" do
     extension.attribute_groups = [atg1]
 
     children = extension.children
-    children.include?(grp1).should be_true
-    children.include?(choice1).should be_true
-    children.include?(sequence1).should be_true
-    children.include?(at1).should be_true
-    children.include?(atg1).should be_true
+    expect(children.include?(grp1)).to be_truthy
+    expect(children.include?(choice1)).to be_truthy
+    expect(children.include?(sequence1)).to be_truthy
+    expect(children.include?(at1)).to be_truthy
+    expect(children.include?(atg1)).to be_truthy
   end
 
   it "should return restriction children" do
@@ -253,12 +253,12 @@ describe "Resolver" do
     restriction.simple_type = st1
 
     children = restriction.children
-    children.include?(grp1).should be_true
-    children.include?(choice1).should be_true
-    children.include?(sequence1).should be_true
-    children.include?(at1).should be_true
-    children.include?(atg1).should be_true
-    children.include?(st1).should be_true
+    expect(children.include?(grp1)).to be_truthy
+    expect(children.include?(choice1)).to be_truthy
+    expect(children.include?(sequence1)).to be_truthy
+    expect(children.include?(at1)).to be_truthy
+    expect(children.include?(atg1)).to be_truthy
+    expect(children.include?(st1)).to be_truthy
   end
 
   ########## 
@@ -299,11 +299,11 @@ describe "Resolver" do
      element2.resolve(node_objs)
      element3.resolve(node_objs)
 
-     element1.type.should == String
-     element2.type.should == simple_type
-     element2.ref.should  == element1
-     element3.type.should == complex_type
-     element3.substitutionGroup.should  == element1
+     expect(element1.type).to eq(String)
+     expect(element2.type).to eq(simple_type)
+     expect(element2.ref).to  eq(element1)
+     expect(element3.type).to eq(complex_type)
+     expect(element3.substitutionGroup).to  eq(element1)
   end
 
   it "should resolve complex type relationships" do
@@ -335,9 +335,9 @@ describe "Resolver" do
      attr1.resolve(node_objs)
      attr2.resolve(node_objs)
 
-     attr1.type.should == XSDInteger 
-     attr2.type.should == simple_type
-     attr2.ref.should == attr1
+     expect(attr1.type).to eq(XSDInteger) 
+     expect(attr2.type).to eq(simple_type)
+     expect(attr2.ref).to eq(attr1)
   end
 
   it "should resolve attribute group relationships" do
@@ -356,7 +356,7 @@ describe "Resolver" do
      attr_grp1.resolve(node_objs)
      attr_grp2.resolve(node_objs)
 
-     attr_grp2.ref.should == attr_grp1
+     expect(attr_grp2.ref).to eq(attr_grp1)
   end
 
   it "should resolve group relationships" do
@@ -373,7 +373,7 @@ describe "Resolver" do
      grp1.resolve(node_objs)
      grp2.resolve(node_objs)
 
-     grp2.ref.should == grp1
+     expect(grp2.ref).to eq(grp1)
   end
 
   it "should resolve list relationships" do
@@ -399,8 +399,8 @@ describe "Resolver" do
      list1.resolve(node_objs)
      list2.resolve(node_objs)
 
-     list1.itemType.should == XSDFloat 
-     list2.itemType.should == simple_type3
+     expect(list1.itemType).to eq(XSDFloat) 
+     expect(list2.itemType).to eq(simple_type3)
   end
 
   it "should resolve simple content relationships" do
@@ -467,9 +467,9 @@ describe "Resolver" do
      extension2.resolve(node_objs)
      extension3.resolve(node_objs)
 
-     extension1.base.should == Char
-     extension2.base.should == simple_type1
-     extension3.base.should == complex_type1
+     expect(extension1.base).to eq(Char)
+     expect(extension2.base).to eq(simple_type1)
+     expect(extension3.base).to eq(complex_type1)
   end
 
   it "should resolve restriction relationships" do
@@ -516,9 +516,9 @@ describe "Resolver" do
      restriction2.resolve(node_objs)
      restriction3.resolve(node_objs)
 
-     restriction1.base.should == Char
-     restriction2.base.should == simple_type1
-     restriction3.base.should == complex_type1
+     expect(restriction1.base).to eq(Char)
+     expect(restriction2.base).to eq(simple_type1)
+     expect(restriction3.base).to eq(complex_type1)
   end
 
 
@@ -570,21 +570,21 @@ describe "Resolver" do
      schema = Parser.parse_xsd :raw => data
      node_objs = Resolver.node_objects schema
 
-     node_objs.values.flatten.size.should == 26
-     node_objs[Schema].size.should == 1
-     node_objs[ComplexType].size.should == 3
-     node_objs[Element].size.should == 6
-     node_objs[Attribute].size.should == 2
-     node_objs[AttributeGroup].size.should == 1
-     node_objs[Choice].size.should == 3
-     node_objs[ComplexContent].size.should == 2
-     node_objs[Extension].size.should == 1
-     node_objs[Group].size.should == 1
-     node_objs[List].size.should == 2
-     node_objs[Restriction].size.should == 1
-     node_objs[Sequence].size.should == 1
-     node_objs[SimpleContent].size.should == 0
-     node_objs[SimpleType].size.should == 2
+     expect(node_objs.values.flatten.size).to eq(26)
+     expect(node_objs[Schema].size).to eq(1)
+     expect(node_objs[ComplexType].size).to eq(3)
+     expect(node_objs[Element].size).to eq(6)
+     expect(node_objs[Attribute].size).to eq(2)
+     expect(node_objs[AttributeGroup].size).to eq(1)
+     expect(node_objs[Choice].size).to eq(3)
+     expect(node_objs[ComplexContent].size).to eq(2)
+     expect(node_objs[Extension].size).to eq(1)
+     expect(node_objs[Group].size).to eq(1)
+     expect(node_objs[List].size).to eq(2)
+     expect(node_objs[Restriction].size).to eq(1)
+     expect(node_objs[Sequence].size).to eq(1)
+     expect(node_objs[SimpleContent].size).to eq(0)
+     expect(node_objs[SimpleType].size).to eq(2)
   end
 
   it "should correctly resolve nodes" do
@@ -602,8 +602,8 @@ describe "Resolver" do
      schema = Parser.parse_xsd :raw => data
      #node_objs = Resolver.resolve_nodes schema # XXX don't like doing it this way but this is invoked as part of Parser.parse_xsd, and shouldn't be invoked twice on one data set
 
-     schema.complex_types[0].should == schema.elements[1].type
-     schema.elements[0].should == schema.complex_types[0].choice.elements[1].ref
+     expect(schema.complex_types[0]).to eq(schema.elements[1].type)
+     expect(schema.elements[0]).to eq(schema.complex_types[0].choice.elements[1].ref)
   end
 
 end

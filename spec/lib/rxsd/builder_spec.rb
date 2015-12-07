@@ -3,9 +3,9 @@
 # Copyright (C) 2010 Mohammed Morsi <movitto@yahoo.com>
 # See COPYING for the License of this software
 
-require File.dirname(__FILE__) + '/spec_helper'
+require 'spec_helper'
 
-describe "Builder" do
+describe RXSD do
 
   # test to_class_builder method on all XSD classes
 
@@ -73,7 +73,7 @@ describe "Builder" do
      gp = ClassBuilder.new
      p  = ClassBuilder.new :base_builder => gp
      c  = ClassBuilder.new :base_builder => p
-     as = ClassBuilder.new 
+     as = ClassBuilder.new
      c.associated_builder = as
      at1 = ClassBuilder.new
      at2 = ClassBuilder.new

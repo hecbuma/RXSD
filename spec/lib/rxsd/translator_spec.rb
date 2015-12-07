@@ -3,9 +3,9 @@
 # Copyright (C) 2010 Mohammed Morsi <movitto@yahoo.com>
 # See COPYING for the License of this software
 
-require File.dirname(__FILE__) + '/spec_helper'
+require 'spec_helper'
 
-describe "Translator" do
+describe 'RXSD Translators' do
 
   # FIXME test child_attributes on all XSD classes!
 
@@ -13,10 +13,10 @@ describe "Translator" do
     @data = '<schema xmlns:xs="http://www.w3.org/2001/XMLSchema">' +
                '<xs:simpleType name="MyStrType">'+
                '  <xs:restriction base="xs:string" />' +
-               '</xs:simpleType>' + 
+               '</xs:simpleType>' +
                '<xs:simpleType name="MyFArrType">'+
                '  <xs:list itemType="xs:float" />' +
-               '</xs:simpleType>' + 
+               '</xs:simpleType>' +
                '<xs:complexType id="ct1" name="MyType">' +
                  '<xs:complexContent id="cc1">' +
                     '<xs:extension id="e1" base="xs:string">' +

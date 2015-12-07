@@ -3,9 +3,9 @@
 # Copyright (C) 2010 Mohammed Morsi <movitto@yahoo.com>
 # See COPYING for the License of this software
 
-require File.dirname(__FILE__) + '/spec_helper'
+require 'spec_helper'
 
-describe "RXSD::XML" do
+describe RXSD::XML do
 
    it "should provide root node given adapter and xml data" do
       root_node = XML::Node.factory :backend => :libxml, :xml => "<schema/>"
@@ -59,10 +59,10 @@ end
 describe "RXSD::LibXMLAdapter" do
 
    before(:each) do
-      @test_xml = 
-       "<schema xmlns:h='http://test.host/ns.xml' xmlns:a='aaa' >" + 
-         "<entity some_attr='foo' another_attr='bar'><child child_attr='123' /></entity>" + 
-         "<other_entity>some text</other_entity>" + 
+      @test_xml =
+       "<schema xmlns:h='http://test.host/ns.xml' xmlns:a='aaa' >" +
+         "<entity some_attr='foo' another_attr='bar'><child child_attr='123' /></entity>" +
+         "<other_entity>some text</other_entity>" +
        "</schema>"
    end
 
@@ -157,7 +157,7 @@ class MockXMLNode < XML::Node
    def name
      @tag_name
    end
- 
+
    def attrs
       {:str_attr => "foobar", :int_attr => 50, :float_attr => 1.2, 'value' => 'pi'}
    end
@@ -182,7 +182,7 @@ class MockXMLNode < XML::Node
       "contents"
    end
 
-   def namespaces 
+   def namespaces
       []
    end
 end

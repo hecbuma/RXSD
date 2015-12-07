@@ -24,6 +24,7 @@ class Parser
 
      # FIXME validate against xsd's own xsd
      root_xml_node = XML::Node.factory :backend => :libxml, :xml => data
+
      schema = XSD::Schema.from_xml root_xml_node
 
      Logger.debug "parsed xsd, resolving relationships"

@@ -14,16 +14,18 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 1.3.3")
 
   s.add_dependency('libxml-ruby', '~> 2.8.0')
-  s.add_dependency('activesupport', '>= 3.2')
-  s.add_development_dependency "rspec", '~> 3.4.0'
-  s.add_development_dependency "guard"
-  s.add_development_dependency "guard-rspec"
-  s.add_development_dependency "pry"
-  s.add_development_dependency "pry-remote"
-  s.add_development_dependency "pry-nav"
+  s.add_dependency('activesupport', '~> 4.2.5')
 
-  s.author = "Mo Morsi"
-  s.email = "mo@morsi.org"
+  s.add_development_dependency 'rspec', '~> 3.4.0'
+  s.add_development_dependency 'guard'
+  s.add_development_dependency 'guard-rspec'
+  s.add_development_dependency 'pry'
+  s.add_development_dependency 'pry-remote'
+  s.add_development_dependency 'pry-nav'
+  s.add_development_dependency 'pry-byebug'
+
+  s.author = 'Mo Morsi'
+  s.email = 'mo@morsi.org'
   s.date = Date.today.to_s
   s.description = %q{A library to translate xsd schemas and xml implementations into ruby classes/objects}
   s.summary = %q{A library to translate xsd schemas and xml implementations into ruby classes/objects}

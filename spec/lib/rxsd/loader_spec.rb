@@ -3,9 +3,9 @@
 # Copyright (C) 2010 Mohammed Morsi <movitto@yahoo.com>
 # See COPYING for the License of this software
 
-require File.dirname(__FILE__) + '/spec_helper'
+require 'spec_helper'
 
-describe "Loader" do
+describe RXSD::Loader do
 
   it "should load file" do
      File.write("/tmp/rxsd-test", "foobar")

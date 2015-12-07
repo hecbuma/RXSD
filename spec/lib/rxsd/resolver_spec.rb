@@ -3,9 +3,9 @@
 # Copyright (C) 2010 Mohammed Morsi <movitto@yahoo.com>
 # See COPYING for the License of this software
 
-require File.dirname(__FILE__) + '/spec_helper'
+require 'spec_helper'
 
-describe "Resolver" do
+describe RXSD::Resolver do
 
   # test children method on all XSD classes
 
@@ -98,7 +98,7 @@ describe "Resolver" do
   it "should return attribute children" do
      att    = Attribute.new
      simple_type   = SimpleType.new
-     
+
      att.simple_type = simple_type
 
      children = att.children
@@ -112,7 +112,7 @@ describe "Resolver" do
      atg1   = AttributeGroup.new
      atg.attributes = [at1, at2]
      atg.attribute_groups = [atg1]
-     
+
      children = atg.children
      expect(children.include?(at1)).to be_truthy
      expect(children.include?(at2)).to be_truthy
@@ -135,7 +135,7 @@ describe "Resolver" do
   it "should return list children" do
      list    = List.new
      simple_type   = SimpleType.new
-     
+
      list.simple_type = simple_type
 
      children = list.children
@@ -261,7 +261,7 @@ describe "Resolver" do
     expect(children.include?(st1)).to be_truthy
   end
 
-  ########## 
+  ##########
 
   # test resolve method on all XSD classes
 
@@ -335,7 +335,7 @@ describe "Resolver" do
      attr1.resolve(node_objs)
      attr2.resolve(node_objs)
 
-     expect(attr1.type).to eq(XSDInteger) 
+     expect(attr1.type).to eq(XSDInteger)
      expect(attr2.type).to eq(simple_type)
      expect(attr2.ref).to eq(attr1)
   end
@@ -385,7 +385,7 @@ describe "Resolver" do
      simple_type3 = SimpleType.new
      simple_type3.name = "simple_type_test3"
      schema.simple_types = [simple_type1, simple_type2, simple_type3]
-     
+
      list1 = List.new
      list1.itemType = "xs:float"
 
@@ -399,7 +399,7 @@ describe "Resolver" do
      list1.resolve(node_objs)
      list2.resolve(node_objs)
 
-     expect(list1.itemType).to eq(XSDFloat) 
+     expect(list1.itemType).to eq(XSDFloat)
      expect(list2.itemType).to eq(simple_type3)
   end
 
@@ -552,7 +552,7 @@ describe "Resolver" do
                '<xs:attributeGroup name="atg1" />' +
                '<xs:restriction base="Foo">' +
                   '<xs:attributeGroup ref="atg1" />' +
-               '</xs:restriction>' + 
+               '</xs:restriction>' +
                '<xs:element id="ct3">' +
                  '<xs:simpleType>' +
                    '<xs:list id="ls1" />' +

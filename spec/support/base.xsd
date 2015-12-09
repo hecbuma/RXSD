@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!-- Revision="$Revision: #C_1 $" -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xsd:element name="BaseElement" type="xsd:boolean" minOccurs="0"/>
+  <xsd:include schemaLocation="include-base.xsd"/>
+
+</xsd:schema>

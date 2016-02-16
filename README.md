@@ -1,5 +1,4 @@
-build
-[![Build Status][travis-image]][travis-url]
+[![Build Status](https://travis-ci.org/MatthiasWinkelmann/RXSD.svg?branch=master)](https://travis-ci.org/MatthiasWinkelmann/RXSD)
 
 # RXSD - XSD / Ruby Translator
 
@@ -8,7 +7,7 @@ This is a fork of RXSD by Mohammed Morsi <movitto@yahoo.com>
 # Changes in this fork
 
 The dependencies were updated to current versions and the tests
-were converted to Minitest
+were converted to Minitest.
 
 # License
 
@@ -36,11 +35,22 @@ to the others.
 
 # Installation
 
-To install rxsd simply run:
+To install the official gem do
    `gem install rxsd`
 
-Source code is available via:
-   `git clone http://github.com/movitto/rxsd``
+... But that will probably end with
+
+```
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+    current directory: [...]gems/libxml-ruby-1.1.4/ext/libxml
+````
+
+To use this fork add
+```
+gem 'RXSD', :git => 'https://github.com/MatthiasWinkelmann/RXSD.git'
+````
+to your Gemfile or clone the repository.
 
 # Usage
 

@@ -12,7 +12,6 @@ RSpec::Core::RakeTask.new(:spec) do |task|
 end
 
 task :console do
-  require 'pry'
   require 'rxsd'
 
   def reload!

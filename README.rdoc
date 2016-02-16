@@ -1,6 +1,14 @@
+[![Build Status](https://travis-ci.org/MatthiasWinkelmann/RXSD.svg?branch=master)](https://travis-ci.org/MatthiasWinkelmann/RXSD)
 == RXSD - XSD / Ruby Translator
 
-Copyright (C) 2010 Mohammed Morsi <movitto@yahoo.com>
+This is a fork of RXSD by Mohammed Morsi <movitto@yahoo.com>
+
+== Changes in this fork
+
+The dependencies were updated to current versions and the tests
+were converted to Minitest
+
+== License
 
 RXSD is made available under the GNU LESSER GENERAL PUBLIC LICENSE
 as published by the Free Software Foundation, either version 3

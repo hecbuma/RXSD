@@ -19,8 +19,8 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.0.0'
 
-  s.add_dependency('libxml-ruby', '~> 2.8.0')
-  s.add_dependency('activesupport', '~> 4.2.5')
+  s.add_runtime_dependency('libxml-ruby', '~> 2.8.0')
+  s.add_runtime_dependency('activesupport', '~> 4.2.5')
   s.add_development_dependency 'bundler', '~>1.11'
   s.add_development_dependency 'rake', '~>10.0'
   s.add_development_dependency 'minitest', '~>5.0'

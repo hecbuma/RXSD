@@ -3,7 +3,7 @@
 # Copyright (C) 2010 Mohammed Morsi <movitto@yahoo.com>
 # See COPYING for the License of this software
 
-require 'spec_helper'
+require 'test_helper'
 
 describe RXSD do
 
@@ -17,11 +17,11 @@ describe RXSD do
     schema.elements = [elem1, elem2]
     class_builders = schema.to_class_builders
 
-    expect(class_builders.size).to eq(2)
-    expect(class_builders[0].class).to eq(ClassBuilder)
-    expect(class_builders[0].instance_variable_get("@xsd_obj")).to eq(elem1)
-    expect(class_builders[1].class).to eq(ClassBuilder)
-    expect(class_builders[1].instance_variable_get("@xsd_obj")).to eq(elem2)
+    assert_equal 2, class_builders.size
+    assert_equal ClassBuilder, class_builders[0].class
+    assert_equal elem1, class_builders[0].instance_variable_get("@xsd_obj")
+    assert_equal ClassBuilder, class_builders[1].class
+    assert_equal elem2, class_builders[1].instance_variable_get("@xsd_obj")
   end
 
   it "should return element class builders" do
@@ -33,36 +33,36 @@ describe RXSD do
     element.name = "foo_element"
     element.ref = elem1
     cb = element.to_class_builder
-    expect(cb.class).to eq(ClassBuilder)
-    expect(cb.instance_variable_get("@xsd_obj")).to eq(elem1)
-    expect(cb.klass_name).to eq("FooElement")
+    assert_equal ClassBuilder, cb.class
+    assert_equal elem1, cb.instance_variable_get("@xsd_obj")
+    assert_equal "FooElement", cb.klass_name
 
     # FIXME the next two 'type' test cases need to be fixed / expanded
     element = Element.new
     element.name = "bar_element"
     element.type = st1
     cb = element.to_class_builder
-    expect(cb.class).to eq(ClassBuilder)
+    assert_equal ClassBuilder, cb.class
     #cb.instance_variable_get("@xsd_obj").should == st1     TODO since clone is invoked, @xsd_obj test field never gets copied, fix this
-    expect(cb.klass_name).to eq("BarElement")
+    assert_equal "BarElement", cb.klass_name
 
     element = Element.new
     element.type = ct1
     cb = element.to_class_builder
-    expect(cb.class).to eq(ClassBuilder)
+    assert_equal ClassBuilder, cb.class
     #cb.instance_variable_get("@xsd_obj").should == ct1
 
     element = Element.new
     element.simple_type = st1
     cb = element.to_class_builder
-    expect(cb.class).to eq(ClassBuilder)
-    expect(cb.instance_variable_get("@xsd_obj")).to eq(st1)
+    assert_equal ClassBuilder, cb.class
+    assert_equal st1, cb.instance_variable_get("@xsd_obj")
 
     element = Element.new
     element.complex_type = ct1
     cb = element.to_class_builder
-    expect(cb.class).to eq(ClassBuilder)
-    expect(cb.instance_variable_get("@xsd_obj")).to eq(ct1)
+    assert_equal ClassBuilder, cb.class
+    assert_equal ct1, cb.instance_variable_get("@xsd_obj")
   end
 
   # FIXME test other XSD classes' to_class_builder methods
@@ -81,21 +81,21 @@ describe RXSD do
      c.attribute_builders.push at2
 
      ab = c.associated
-     expect(ab.size).to eq(5)
+     assert_equal 5, ab.size
   end
 
   it "should build class" do
      cb1 = RubyClassBuilder.new :klass => String, :klass_name => "Widget"
-     expect(cb1.build).to eq(String)
+     assert_equal String, cb1.build
 
      cb2 = RubyClassBuilder.new :klass_name => "Foobar"
      c2 = cb2.build
-     expect(c2).to eq(Foobar)
-     expect(c2.superclass).to eq(Object)
+     assert_equal Foobar, c2
+     assert_equal Object, c2.superclass
 
      acb = RubyClassBuilder.new :klass => Array, :klass_name => "ArrSocket", :associated_builder => cb1
      ac = acb.build
-     expect(ac).to eq(Array)
+     assert_equal Array, ac
 
      tcb = RubyClassBuilder.new :klass_name => "CamelCased"
 
@@ -104,34 +104,34 @@ describe RXSD do
      cb3.attribute_builders.push tcb
      cb3.attribute_builders.push acb
      c3 = cb3.build
-     expect(c3).to eq(Foomoney)
-     expect(c3.superclass).to eq(Foobar)
+     assert_equal Foomoney, c3
+     assert_equal Foobar, c3.superclass
      c3i = c3.new
-     expect(c3i.method(:widget)).not_to be_nil
-     expect(c3i.method(:widget).arity).to eq(0)
-     expect(c3i.method(:widget=)).not_to be_nil
-     expect(c3i.method(:widget=).arity).to eq(1)
-     expect(c3i.method(:camel_cased)).not_to be_nil
-     expect(c3i.method(:camel_cased).arity).to eq(0)
-     expect(c3i.method(:camel_cased=)).not_to be_nil
-     expect(c3i.method(:camel_cased=).arity).to eq(1)
-     expect(c3i.method(:arr_socket)).not_to be_nil
-     expect(c3i.method(:arr_socket).arity).to eq(0)
-     expect(c3i.method(:arr_socket=)).not_to be_nil
-     expect(c3i.method(:arr_socket=).arity).to eq(1)
+     refute_nil c3i.method(:widget)
+     assert_equal 0, c3i.method(:widget).arity
+     refute_nil c3i.method(:widget=)
+     assert_equal 1, c3i.method(:widget=).arity
+     refute_nil c3i.method(:camel_cased)
+     assert_equal 0, c3i.method(:camel_cased).arity
+     refute_nil c3i.method(:camel_cased=)
+     assert_equal 1, c3i.method(:camel_cased=).arity
+     refute_nil c3i.method(:arr_socket)
+     assert_equal 0, c3i.method(:arr_socket).arity
+     refute_nil c3i.method(:arr_socket=)
+     assert_equal 1, c3i.method(:arr_socket=).arity
   end
 
   it "should build definition" do
      cb1 = RubyDefinitionBuilder.new :klass => String, :klass_name => "Widget"
-     expect(cb1.build).to eq("class String\nend")
+     assert_equal "class String\nend", cb1.build
 
      cb2 = RubyDefinitionBuilder.new :klass_name => "Foobar"
      d2 = cb2.build
-     expect(d2).to eq("class Foobar < Object\nend")
+     assert_equal "class Foobar < Object\nend", d2
 
      acb = RubyDefinitionBuilder.new :klass => Array, :klass_name => "ArrSocket", :associated_builder => cb1
      ad = acb.build
-     expect(ad).to eq("class Array\nend")
+     assert_equal "class Array\nend", ad
 
      tcb = RubyDefinitionBuilder.new :klass_name => "CamelCased"
 
@@ -140,11 +140,11 @@ describe RXSD do
      cb3.attribute_builders.push tcb
      cb3.attribute_builders.push acb
      d3 = cb3.build
-     expect(d3).to eq("class Foomoney < Foobar\n" +
+     assert_equal "class Foomoney < Foobar\n" +
                   "attr_accessor :widget\n" +
                   "attr_accessor :camel_cased\n" +
                   "attr_accessor :arr_socket\n" +
-                  "end")
+                  "end", d3
   end
 
   it "should build object" do
@@ -167,10 +167,10 @@ describe RXSD do
      rob = RubyObjectBuilder.new :tag_name => "Godzilla", :content => "some stuff", :attributes => { "first_attr" => "first_val", "SecondAttr" => "420" }
      obj = rob.build schema
 
-     expect(obj.class).to eq(Godzilla)
-     expect(obj).to eq("some stuff")  # since obj derives from string
-     expect(obj.first_attr).to eq("first_val")
-     expect(obj.second_attr).to eq(420)
+     assert_equal Godzilla, obj.class
+     assert_equal "some stuff", obj  # since obj derives from string
+     assert_equal "first_val", obj.first_attr
+     assert_equal 420, obj.second_attr
 
 
      schema_data = "<schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>" +
@@ -206,12 +206,12 @@ describe RXSD do
 
      obj = rob.build schema
 
-     expect(obj.class).to eq(Employee)
-     expect(obj.ssn).to eq("111-22-3333")
-     expect(obj.residency).to eq("citizen")
-     expect(obj.firstname).to eq("mo")
-     expect(obj.lastname).to eq("morsi")
-     expect(obj.country).to eq("USA")
+     assert_equal Employee, obj.class
+     assert_equal "111-22-3333", obj.ssn
+     assert_equal "citizen", obj.residency
+     assert_equal "mo", obj.firstname
+     assert_equal "morsi", obj.lastname
+     assert_equal "USA", obj.country
   end
 end
 

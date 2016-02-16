@@ -3,7 +3,7 @@
 # Copyright (C) 2010 Mohammed Morsi <movitto@yahoo.com>
 # See COPYING for the License of this software
 
-require 'spec_helper'
+require 'test_helper'
 
 describe RXSD::Parser do
 
@@ -11,28 +11,28 @@ describe RXSD::Parser do
      File.write("/tmp/rxsd-test", "<schema><element name='foo' type='xs:boolean' />" +
                                   "<complexType><choice><element ref='foo' /></choice></complexType></schema>")
      schema = Parser.parse_xsd :uri => "file:///tmp/rxsd-test"
-     expect(schema.elements.size).to eq(1)
-     expect(schema.complex_types.size).to eq(1)
-     expect(schema.elements[0].name).to eq("foo")
-     expect(schema.elements[0].type).to eq(Boolean)
-     expect(schema.complex_types[0].choice.elements[0].ref.name).to eq("foo")
-     expect(schema.complex_types[0].choice.elements[0].ref.type).to eq(Boolean)
+     assert_equal 1, schema.elements.size
+     assert_equal 1, schema.complex_types.size
+     assert_equal "foo", schema.elements[0].name
+     assert_equal Boolean, schema.elements[0].type
+     assert_equal "foo", schema.complex_types[0].choice.elements[0].ref.name
+     assert_equal Boolean, schema.complex_types[0].choice.elements[0].ref.type
   end
 
   it "should identifity builtin types" do
-     expect(Parser.is_builtin?(String)).to eq(true)
-     expect(Parser.is_builtin?(Boolean)).to eq(true)
-     expect(Parser.is_builtin?(XSDFloat)).to eq(true)
-     expect(Parser.is_builtin?(XSDInteger)).to eq(true)
-     expect(Parser.is_builtin?(Parser)).not_to eq(true)
+     assert_equal true, Parser.is_builtin?(String)
+     assert_equal true, Parser.is_builtin?(Boolean)
+     assert_equal true, Parser.is_builtin?(XSDFloat)
+     assert_equal true, Parser.is_builtin?(XSDInteger)
+     refute Parser.is_builtin?(Parser)
   end
 
   it "should parse builtin types" do
-     expect(Parser.parse_builtin_type("xs:string")).to eq(String)
-     expect(Parser.parse_builtin_type("xs:boolean")).to eq(Boolean)
-     expect(Parser.parse_builtin_type("xs:decimal")).to eq(XSDFloat)
-     expect(Parser.parse_builtin_type("xs:float")).to eq(XSDFloat)
-     expect(Parser.parse_builtin_type("xs:double")).to eq(XSDFloat)
+     assert_equal String, Parser.parse_builtin_type("xs:string")
+     assert_equal Boolean, Parser.parse_builtin_type("xs:boolean")
+     assert_equal XSDFloat, Parser.parse_builtin_type("xs:decimal")
+     assert_equal XSDFloat, Parser.parse_builtin_type("xs:float")
+     assert_equal XSDFloat, Parser.parse_builtin_type("xs:double")
   end
 
   it "should parse schema" do
@@ -40,24 +40,24 @@ describe RXSD::Parser do
             "   elementFormDefault='qualified' attributeFormDefault='unqualified' />"
      doc  = LibXML::XML::Document.string data
      schema = Schema.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root))
-     expect(schema.namespaces.size).to eq(2)
-     expect(schema.targetNamespace).to eq('foobar')
-     expect(schema.namespaces[nil]).to eq('http://www.w3.org/2001/XMLSchema')
-     expect(schema.namespaces['foo']).to eq('http://morsi.org/myschema')
-     expect(schema.elementFormDefault).to eq("qualified")
-     expect(schema.attributeFormDefault).to eq("unqualified")
+     assert_equal 2, schema.namespaces.size
+     assert_equal 'foobar', schema.targetNamespace
+     assert_equal 'http://www.w3.org/2001/XMLSchema', schema.namespaces[nil]
+     assert_equal 'http://morsi.org/myschema', schema.namespaces['foo']
+     assert_equal "qualified", schema.elementFormDefault
+     assert_equal "unqualified", schema.attributeFormDefault
 
      data = "<schema><element id='foo'/></schema>"
      doc  = LibXML::XML::Document.string data
      schema = Schema.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root))
-     expect(schema.elements.size).to eq(1)
-     expect(schema.elements[0].id).to eq("foo")
+     assert_equal 1, schema.elements.size
+     assert_equal "foo", schema.elements[0].id
 
      data = "<schema xmlns:xs='http://www.w3.org/2001/XMLSchema'><xs:element id='foo'/></schema>"
      doc  = LibXML::XML::Document.string data
      schema = Schema.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root))
-     expect(schema.elements.size).to eq(1)
-     expect(schema.elements[0].id).to eq("foo")
+     assert_equal 1, schema.elements.size
+     assert_equal "foo", schema.elements[0].id
   end
 
   it "should parse element" do
@@ -68,16 +68,16 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      element = Element.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                                          :parent => RXSD::XML::LibXMLNode.new(:node => doc.root)))
-     expect(element.id).to eq("iii")
-     expect(element.name).to eq("xxx")
-     expect(element.type).to eq("yyy")
-     expect(element.default).to eq(nil)
-     expect(element.maxOccurs).to eq(5)
-     expect(element.minOccurs).to eq(1)
-     expect(element.nillable).to eq(true)
-     expect(element.abstract).to eq(true)
-     expect(element.ref).to eq("Foo")
-     expect(element.form).to eq("qualified")
+     assert_equal "iii", element.id
+     assert_equal "xxx", element.name
+     assert_equal "yyy", element.type
+     assert_equal nil, element.default
+     assert_equal 5, element.maxOccurs
+     assert_equal 1, element.minOccurs
+     assert_equal true, element.nillable
+     assert_equal true, element.abstract
+     assert_equal "Foo", element.ref
+     assert_equal "qualified", element.form
 
      data = '<s xmlns:xs="http://www.w3.org/2001/XMLSchema">' +
                 '<xs:element default="Foobar" minOccurs="unbounded">' +
@@ -87,8 +87,8 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      element = Element.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                                          :parent => RXSD::XML::LibXMLNode.new(:node => doc.root)))
-     expect(element.default).to eq(nil)
-     expect(element.minOccurs).to eq("unbounded")
+     assert_equal nil, element.default
+     assert_equal "unbounded", element.minOccurs
 
      data = '<schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">'+
                 '<xs:element id="iii" ref="Foo" />'+
@@ -96,9 +96,9 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      element = Element.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                                          :parent => RXSD::XML::LibXMLNode.new(:node => doc.root)))
-     expect(element.id).to eq("iii")
-     expect(element.ref).to eq(nil)
-     expect(element.form).to eq("unqualified")
+     assert_equal "iii", element.id
+     assert_equal nil, element.ref
+     assert_equal "unqualified", element.form
 
      data = '<s xmlns:xs="http://www.w3.org/2001/XMLSchema">' +
               '<xs:element default="Foobar" minOccurs="unbounded">' +
@@ -108,8 +108,8 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      element = Element.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                                          :parent => RXSD::XML::LibXMLNode.new(:node => doc.root)))
-     expect(element.default).to eq("Foobar")
-     expect(element.simple_type.id).to eq("foobar")
+     assert_equal "Foobar", element.default
+     assert_equal "foobar", element.simple_type.id
   end
 
   it "should parse complex type" do
@@ -123,14 +123,14 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      complexType = ComplexType.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                                          :parent => RXSD::XML::LibXMLNode.new(:node => doc.root)))
-     expect(complexType.id).to eq("iii")
-     expect(complexType.name).to eq("xxx")
-     expect(complexType.abstract).to eq(true)
-     expect(complexType.mixed).to eq(true)
-     expect(complexType.attributes.size).to eq(2)
-     expect(complexType.attributes[0].name).to eq("Foo")
-     expect(complexType.attributes[1].name).to eq("Bar")
-     expect(complexType.group.name).to eq("Gr")
+     assert_equal "iii", complexType.id
+     assert_equal "xxx", complexType.name
+     assert_equal true, complexType.abstract
+     assert_equal true, complexType.mixed
+     assert_equal 2, complexType.attributes.size
+     assert_equal "Foo", complexType.attributes[0].name
+     assert_equal "Bar", complexType.attributes[1].name
+     assert_equal "Gr", complexType.group.name
 
      data = '<schema xmlns:xs="http://www.w3.org/2001/XMLSchema">' +
                '<xs:complexType mixed="true">' +
@@ -140,8 +140,8 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      complexType = ComplexType.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                                          :parent => RXSD::XML::LibXMLNode.new(:node => doc.root)))
-     expect(complexType.mixed).to eq(false)
-     expect(complexType.simple_content.id).to eq("123")
+     assert_equal false, complexType.mixed
+     assert_equal "123", complexType.simple_content.id
   end
 
   it "should parse simple type" do
@@ -154,10 +154,10 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      simpleType = SimpleType.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                                          :parent => RXSD::XML::LibXMLNode.new(:node => doc.root)))
-     expect(simpleType.id).to eq("iii")
-     expect(simpleType.name).to eq("xxx")
-     expect(simpleType.restriction.id).to eq("rs1")
-     expect(simpleType.list.id).to eq("li1")
+     assert_equal "iii", simpleType.id
+     assert_equal "xxx", simpleType.name
+     assert_equal "rs1", simpleType.restriction.id
+     assert_equal "li1", simpleType.list.id
   end
 
   it "should parse attribute" do
@@ -167,12 +167,12 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      attr = Attribute.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                                          :parent => RXSD::XML::LibXMLNode.new(:node => doc.root)))
-     expect(attr.id).to eq("at1")
-     expect(attr.name).to eq("at1")
-     expect(attr.form).to eq("qualified")
-     expect(attr.default).to eq("123")
-     expect(attr.type).to eq("foo")
-     expect(attr.simple_type).to eq(nil)
+     assert_equal "at1", attr.id
+     assert_equal "at1", attr.name
+     assert_equal "qualified", attr.form
+     assert_equal "123", attr.default
+     assert_equal "foo", attr.type
+     assert_equal nil, attr.simple_type
 
      data = '<schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" >' +
                '<xs:attribute id="at2" fixed="123" type="foo">' +
@@ -182,11 +182,11 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      attr = Attribute.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                                          :parent => RXSD::XML::LibXMLNode.new(:node => doc.root)))
-     expect(attr.id).to eq("at2")
-     expect(attr.form).to eq("unqualified")
-     expect(attr.type).to eq(nil)
-     expect(attr.simple_type).not_to be_nil
-     expect(attr.simple_type.id).to eq("st1")
+     assert_equal "at2", attr.id
+     assert_equal "unqualified", attr.form
+     assert_equal nil, attr.type
+     refute_nil attr.simple_type
+     assert_equal "st1", attr.simple_type.id
   end
 
   it "should parse attribute group" do
@@ -200,14 +200,14 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      attrGroup = AttributeGroup.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                                          :parent => RXSD::XML::LibXMLNode.new(:node => doc.root)))
-     expect(attrGroup.id).to eq("ag1")
-     expect(attrGroup.name).to eq("ag1")
-     expect(attrGroup.ref).to eq("ag2")
-     expect(attrGroup.attributes.size).to eq(2)
-     expect(attrGroup.attribute_groups.size).to eq(1)
-     expect(attrGroup.attributes[0].id).to eq("a1")
-     expect(attrGroup.attributes[1].id).to eq("a2")
-     expect(attrGroup.attribute_groups[0].id).to eq("ag3")
+     assert_equal "ag1", attrGroup.id
+     assert_equal "ag1", attrGroup.name
+     assert_equal "ag2", attrGroup.ref
+     assert_equal 2, attrGroup.attributes.size
+     assert_equal 1, attrGroup.attribute_groups.size
+     assert_equal "a1", attrGroup.attributes[0].id
+     assert_equal "a2", attrGroup.attributes[1].id
+     assert_equal "ag3", attrGroup.attribute_groups[0].id
   end
 
   it "should parse group" do
@@ -219,11 +219,11 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      group = Group.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                                          :parent => RXSD::XML::LibXMLNode.new(:node => doc.root)))
-     expect(group.id).to eq("g1")
-     expect(group.name).to eq("g1")
-     expect(group.maxOccurs).to eq(5)
-     expect(group.minOccurs).to eq("unbounded")
-     expect(group.choice.id).to eq("c1")
+     assert_equal "g1", group.id
+     assert_equal "g1", group.name
+     assert_equal 5, group.maxOccurs
+     assert_equal "unbounded", group.minOccurs
+     assert_equal "c1", group.choice.id
 
      data = '<schema xmlns:xs="http://www.w3.org/2001/XMLSchema">' +
                '<xs:group id="g2" ref="g1" >'+
@@ -233,10 +233,10 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      group = Group.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                                          :parent => RXSD::XML::LibXMLNode.new(:node => doc.root)))
-     expect(group.ref).to eq("g1")
-     expect(group.minOccurs).to eq(1)
-     expect(group.maxOccurs).to eq(1)
-     expect(group.sequence.id).to eq("s1")
+     assert_equal "g1", group.ref
+     assert_equal 1, group.minOccurs
+     assert_equal 1, group.maxOccurs
+     assert_equal "s1", group.sequence.id
   end
 
   it "should parse list" do
@@ -250,9 +250,9 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      list = List.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0].children[0],
                               :parent => RXSD::XML::LibXMLNode.new(:node => doc.root.children[0])))
-     expect(list.id).to eq("li1")
-     expect(list.itemType).to eq(nil)
-     expect(list.simple_type.id).to eq("st2")
+     assert_equal "li1", list.id
+     assert_equal nil, list.itemType
+     assert_equal "st2", list.simple_type.id
 
      data = '<schema xmlns:xs="http://www.w3.org/2001/XMLSchema">' +
                '<xs:simpleType id="st1" name="st1">' +
@@ -262,7 +262,7 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      list = List.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0].children[0],
                               :parent => RXSD::XML::LibXMLNode.new(:node => doc.root.children[0])))
-     expect(list.itemType).to eq("Foo")
+     assert_equal "Foo", list.itemType
   end
 
   it "should parse simple content" do
@@ -276,8 +276,8 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      simple_content = SimpleContent.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0].children[0],
                               :parent => RXSD::XML::LibXMLNode.new(:node => doc.root.children[0])))
-     expect(simple_content.id).to eq("sc1")
-     expect(simple_content.restriction.id).to eq("r1")
+     assert_equal "sc1", simple_content.id
+     assert_equal "r1", simple_content.restriction.id
   end
 
   it "should parse choice" do
@@ -296,13 +296,13 @@ describe RXSD::Parser do
      choice = Choice.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0].children[0],
                               :parent => RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                               :parent => RXSD::XML::LibXMLNode.new(:node => doc.root ))))
-     expect(choice.id).to eq("c1")
-     expect(choice.maxOccurs).to eq(5)
-     expect(choice.minOccurs).to eq("unbounded")
-     expect(choice.elements.size).to eq(3)
-     expect(choice.elements[1].id).to eq("e2")
-     expect(choice.choices.size).to eq(2)
-     expect(choice.choices[0].id).to eq("c2")
+     assert_equal "c1", choice.id
+     assert_equal 5, choice.maxOccurs
+     assert_equal "unbounded", choice.minOccurs
+     assert_equal 3, choice.elements.size
+     assert_equal "e2", choice.elements[1].id
+     assert_equal 2, choice.choices.size
+     assert_equal "c2", choice.choices[0].id
 
      data = '<schema xmlns:xs="http://www.w3.org/2001/XMLSchema">' +
                '<xs:complexType id="ct1">' +
@@ -314,10 +314,10 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      choice = Choice.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0].children[0],
                               :parent => RXSD::XML::LibXMLNode.new(:node => doc.root.children[0])))
-     expect(choice.maxOccurs).to eq(1)
-     expect(choice.minOccurs).to eq(1)
-     expect(choice.sequences.size).to eq(1)
-     expect(choice.sequences[0].id).to eq("s1")
+     assert_equal 1, choice.maxOccurs
+     assert_equal 1, choice.minOccurs
+     assert_equal 1, choice.sequences.size
+     assert_equal "s1", choice.sequences[0].id
   end
 
   it "should parse complex content" do
@@ -331,9 +331,9 @@ describe RXSD::Parser do
      doc  = LibXML::XML::Document.string data
      complexContent = ComplexContent.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0].children[0],
                               :parent => RXSD::XML::LibXMLNode.new(:node => doc.root.children[0])))
-     expect(complexContent.id).to eq("cc1")
-     expect(complexContent.mixed).to eq(true)
-     expect(complexContent.restriction.id).to eq("r1")
+     assert_equal "cc1", complexContent.id
+     assert_equal true, complexContent.mixed
+     assert_equal "r1", complexContent.restriction.id
   end
 
   it "should parse sequence" do
@@ -352,13 +352,13 @@ describe RXSD::Parser do
      seq = Sequence.from_xml(RXSD::XML::LibXMLNode.new(:node => doc.root.children[0].children[0],
                               :parent => RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                               :parent => RXSD::XML::LibXMLNode.new(:node => doc.root ))))
-     expect(seq.id).to eq("s1")
-     expect(seq.maxOccurs).to eq(5)
-     expect(seq.minOccurs).to eq("unbounded")
-     expect(seq.elements.size).to eq(3)
-     expect(seq.elements[1].id).to eq("e2")
-     expect(seq.choices.size).to eq(2)
-     expect(seq.choices[0].id).to eq("c2")
+     assert_equal "s1", seq.id
+     assert_equal 5, seq.maxOccurs
+     assert_equal "unbounded", seq.minOccurs
+     assert_equal 3, seq.elements.size
+     assert_equal "e2", seq.elements[1].id
+     assert_equal 2, seq.choices.size
+     assert_equal "c2", seq.choices[0].id
   end
 
   it "should parse extension" do
@@ -378,11 +378,11 @@ describe RXSD::Parser do
                        :parent => RXSD::XML::LibXMLNode.new(:node => doc.root.children[0].children[0],
                        :parent => RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                        :parent => RXSD::XML::LibXMLNode.new(:node => doc.root)))))
-     expect(ext.id).to eq("e1")
-     expect(ext.base).to eq("Foo")
-     expect(ext.group.id).to eq("g1")
-     expect(ext.attributes.size).to eq(2)
-     expect(ext.attributes[0].id).to eq("a1")
+     assert_equal "e1", ext.id
+     assert_equal "Foo", ext.base
+     assert_equal "g1", ext.group.id
+     assert_equal 2, ext.attributes.size
+     assert_equal "a1", ext.attributes[0].id
   end
 
   it "should parse restriction" do
@@ -402,10 +402,10 @@ describe RXSD::Parser do
                        :parent => RXSD::XML::LibXMLNode.new(:node => doc.root.children[0].children[0],
                        :parent => RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                        :parent => RXSD::XML::LibXMLNode.new(:node => doc.root)))))
-     expect(res.id).to eq("r1")
-     expect(res.base).to eq("xs:integer")
-     expect(res.attribute_groups.size).to eq(2)
-     expect(res.min_length).to eq(nil)
+     assert_equal "r1", res.id
+     assert_equal "xs:integer", res.base
+     assert_equal 2, res.attribute_groups.size
+     assert_equal nil, res.min_length
 
      data = '<schema xmlns:xs="http://www.w3.org/2001/XMLSchema">' +
                '<xs:complexType id="ct1" name="ct1">' +
@@ -427,12 +427,12 @@ describe RXSD::Parser do
                        :parent => RXSD::XML::LibXMLNode.new(:node => doc.root.children[0].children[0],
                        :parent => RXSD::XML::LibXMLNode.new(:node => doc.root.children[0],
                        :parent => RXSD::XML::LibXMLNode.new(:node => doc.root)))))
-     expect(res.attribute_groups.size).to eq(2)
-     expect(res.min_length).to eq(5)
-     expect(res.max_exclusive).to eq(15)
-     expect(res.pattern).to eq("[a-zA-Z][a-zA-Z][a-zA-Z]")
-     expect(res.enumerations.size).to eq(2)
-     expect(res.enumerations[0]).to eq("foo")
+     assert_equal 2, res.attribute_groups.size
+     assert_equal 5, res.min_length
+     assert_equal 15, res.max_exclusive
+     assert_equal "[a-zA-Z][a-zA-Z][a-zA-Z]", res.pattern
+     assert_equal 2, res.enumerations.size
+     assert_equal "foo", res.enumerations[0]
   end
 
 
@@ -446,14 +446,14 @@ describe RXSD::Parser do
             "</root_tag>"
 
      schema_instance = Parser.parse_xml :raw => data
-     expect(schema_instance.object_builders.size).to eq(3)
+     assert_equal 3, schema_instance.object_builders.size
      rt = schema_instance.object_builders.find { |ob| ob.tag_name == "root_tag" }
      ct = schema_instance.object_builders.find { |ob| ob.tag_name == "child_tag" }
      gt = schema_instance.object_builders.find { |ob| ob.tag_name == "grandchild_tag" }
 
-     expect(rt).not_to be_nil
-     expect(ct).not_to be_nil
-     expect(gt).not_to be_nil
+     refute_nil rt
+     refute_nil ct
+     refute_nil gt
 
      #rt.children.size.should == 1
      #rt.children[0].should == ct
@@ -461,15 +461,15 @@ describe RXSD::Parser do
      #ct.children.size.should == 1
      #ct.children[0].should == gt
 
-     expect(rt.attributes.size).to eq(2)
-     expect(rt.attributes.has_key?("some_string")).to eq(true)
-     expect(rt.attributes["some_string"]).to eq("foo")
-     expect(rt.attributes.has_key?("MyInt")).to eq(true)
-     expect(rt.attributes["MyInt"]).to eq("bar")
+     assert_equal 2, rt.attributes.size
+     assert_equal true, rt.attributes.has_key?("some_string")
+     assert_equal "foo", rt.attributes["some_string"]
+     assert_equal true, rt.attributes.has_key?("MyInt")
+     assert_equal "bar", rt.attributes["MyInt"]
 
      #gt.children.size.should == 0
-     expect(gt.attributes.has_key?("id")).to eq(true)
-     expect(gt.attributes["id"]).to eq("25")
+     assert_equal true, gt.attributes.has_key?("id")
+     assert_equal "25", gt.attributes["id"]
   end
 
 end

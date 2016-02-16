@@ -3,7 +3,7 @@
 # Copyright (C) 2010 Mohammed Morsi <movitto@yahoo.com>
 # See COPYING for the License of this software
 
-require 'spec_helper'
+require 'test_helper'
 
 describe 'RXSD Translators' do
 
@@ -34,13 +34,13 @@ describe 'RXSD Translators' do
   it "should generate correct schema tags" do
      schema = Parser.parse_xsd :raw => @data
      tags = schema.tags
-     expect(tags.size).to eq(5)
-     expect(tags.has_key?("Kaboom")).to be_truthy
-     expect(tags.has_key?("Foomanchu")).to be_truthy
-     expect(tags.has_key?("MoMoney")).to be_truthy
-     expect(tags.has_key?("MoMoney:my_s")).to be_truthy
-     expect(tags.has_key?("MoMoney:my_a")).to be_truthy
-     expect(tags["Kaboom"]).not_to be_nil
+     assert_equal 5, tags.size
+     assert tags.has_key?("Kaboom")
+     assert tags.has_key?("Foomanchu")
+     assert tags.has_key?("MoMoney")
+     assert tags.has_key?("MoMoney:my_s")
+     assert tags.has_key?("MoMoney:my_a")
+     refute_nil tags["Kaboom"]
   end
 
   #def test_schema_all_builders
@@ -49,33 +49,33 @@ describe 'RXSD Translators' do
   it "should generate ruby classes" do
      schema = Parser.parse_xsd :raw => @data
      classes = schema.to :ruby_classes
-     expect(classes.size).to eq(6)
-     expect(classes.include?(XSDFloat)).to be_truthy
-     expect(classes.include?(Array)).to be_truthy
-     expect(classes.include?(String)).to be_truthy
-     expect(classes.include?(Boolean)).to be_truthy
-     expect(classes.include?(Kaboom)).to be_truthy
-     expect(classes.include?(MoMoney)).to be_truthy
+     assert_equal 6, classes.size
+     assert classes.include?(XSDFloat)
+     assert classes.include?(Array)
+     assert classes.include?(String)
+     assert classes.include?(Boolean)
+     assert classes.include?(Kaboom)
+     assert classes.include?(MoMoney)
      momoney = MoMoney.new
-     expect(momoney.method(:my_s)).not_to be_nil
-     expect(momoney.method(:my_s=)).not_to be_nil
-     expect(momoney.method(:my_a)).not_to be_nil
-     expect(momoney.method(:my_a=)).not_to be_nil
+     refute_nil momoney.method(:my_s)
+     refute_nil momoney.method(:my_s=)
+     refute_nil momoney.method(:my_a)
+     refute_nil momoney.method(:my_a=)
   end
 
   it "should generate ruby class definitions" do
      schema = Parser.parse_xsd :raw => @data
      classes = schema.to :ruby_definitions
-     expect(classes.size).to eq(6)
-     expect(classes.include?("class XSDFloat\nend")).to be_truthy
-     expect(classes.include?("class Array\nend")).to be_truthy
-     expect(classes.include?("class String\nend")).to be_truthy
-     expect(classes.include?("class Boolean\nend")).to be_truthy
-     expect(classes.include?("class Kaboom < String\nend")).to be_truthy
-     expect(classes.include?("class MoMoney < String\n" +
+     assert_equal 6, classes.size
+     assert classes.include?("class XSDFloat\nend")
+     assert classes.include?("class Array\nend")
+     assert classes.include?("class String\nend")
+     assert classes.include?("class Boolean\nend")
+     assert classes.include?("class Kaboom < String\nend")
+     assert classes.include?("class MoMoney < String\n" +
                         "attr_accessor :my_s\n" +
                         "attr_accessor :my_a\n" +
-                      "end")).to be_truthy
+                      "end")
   end
 
   it "should generate ruby objects" do
@@ -85,21 +85,21 @@ describe 'RXSD Translators' do
      instance = '<Kaboom>yo</Kaboom>'
      schema_instance = Parser.parse_xml :raw => instance
      objs = schema_instance.to :ruby_objects, :schema => schema
-     expect(objs.size).to eq(1)
-     expect(objs.collect { |o| o.class }.include?(Kaboom)).to be_truthy
-     expect(objs.find { |o| o.class == Kaboom }).to eq("yo")
+     assert_equal 1, objs.size
+     assert objs.collect { |o| o.class }.include?(Kaboom)
+     assert_equal "yo", objs.find { |o| o.class == Kaboom }
 
      instance = '<Foomanchu>true</Foomanchu>'
      schema_instance = Parser.parse_xml :raw => instance
      objs = schema_instance.to :ruby_objects, :schema => schema
-     expect(objs.size).to eq(1)
-     expect(objs[0]).to eq(true)
+     assert_equal 1, objs.size
+     assert_equal true, objs[0]
 
      instance = '<MoMoney my_s="abc" />'
      schema_instance = Parser.parse_xml :raw => instance
      objs = schema_instance.to :ruby_objects, :schema => schema
-     expect(objs.size).to eq(1)
-     expect(objs.collect { |o| o.class }.include?(MoMoney)).to be_truthy
-     expect(objs.find { |o| o.class == MoMoney }.my_s).to eq("abc")
+     assert_equal 1, objs.size
+     assert objs.collect { |o| o.class }.include?(MoMoney)
+     assert_equal "abc", objs.find { |o| o.class == MoMoney }.my_s
   end
 end

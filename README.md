@@ -1,20 +1,23 @@
-[![Build Status](https://travis-ci.org/MatthiasWinkelmann/RXSD.svg?branch=master)](https://travis-ci.org/MatthiasWinkelmann/RXSD)
-== RXSD - XSD / Ruby Translator
+build
+[![Build Status][travis-image]][travis-url]
+
+# RXSD - XSD / Ruby Translator
 
 This is a fork of RXSD by Mohammed Morsi <movitto@yahoo.com>
 
-== Changes in this fork
+# Changes in this fork
 
 The dependencies were updated to current versions and the tests
 were converted to Minitest
 
-== License
+# License
 
 RXSD is made available under the GNU LESSER GENERAL PUBLIC LICENSE
 as published by the Free Software Foundation, either version 3
 of the License, or (at your option) any later version.
 
-== Info
+# Info
+
 RXSD is a library that translates XSD XML Schema Definitions into Ruby Classes 
 on the fly. It is able to read XSD resources and use them to define Ruby 
 classes in memory or string class definitions to be written to the filesystem
@@ -31,16 +34,17 @@ existing class definitions resulting in a quick way to map XSD to Ruby construct
 letting you define the schema features that you need, and autogenerting handlers
 to the others.
 
-== Installation
+# Installation
 
 To install rxsd simply run:
-   gem install rxsd
+   `gem install rxsd`
 
 Source code is available via:
-   git clone http://github.com/movitto/rxsd
+   `git clone http://github.com/movitto/rxsd``
 
-== Usage
+# Usage
 
+```
   require 'lib/rxsd'
   
   xsd_uri = "file:///home/user/schema.xsd"
@@ -48,17 +52,17 @@ Source code is available via:
   
   schema = RXSD::Parser.parse_xsd :uri => xsd_uri
   
-  puts "=======Classes======="
+  puts "###=Classes###="
   classes = schema.to :ruby_classes
   puts classes.collect{ |cl| !cl.nil? ? (cl.to_s + " < " + cl.superclass.to_s) : ""}.sort.join("\n")
   
-  puts "=======Tags======="
+  puts "###=Tags###="
   puts schema.tags.collect { |n,cb| n + ": " + cb.to_s + ": " + (cb.nil? ? "ncb" : cb.klass_name.to_s + "-" + cb.klass.to_s) }.sort.join("\n")
   
-  puts "=======Objects======="
+  puts "###=Objects###="
   data = RXSD::Parser.parse_xml :uri => xml_uri
   objs = data.to :ruby_objects, :schema => schema
   objs.each {  |obj|
     puts "#{obj}"
   }
-  
+```

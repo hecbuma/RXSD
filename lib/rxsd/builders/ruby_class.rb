@@ -36,9 +36,11 @@ class RubyClassBuilder < ClassBuilder
       end
 
       # create class
-      Object.const_set(@klass_name, Class.new(superclass))
+      # @klass = @klass_name.constantize
+      unless defined?(@klass_name) == 'constant' && @klass_name.send(:class) == Class
+        Object.const_set(@klass_name, Class.new(superclass))
+      end
       @klass = @klass_name.constantize
-
       # FIXME should only do this if the klass corresponds to a simple type
       @klass.class_method :from_s do |str|
             new(:superclass_value => superclass.from_s(str))

@@ -3,7 +3,7 @@
 # Copyright (C) 2010 Mohammed Morsi <movitto@yahoo.com>
 # See COPYING for the License of this software
 
-require 'spec_helper'
+require 'test_helper'
 
 describe RXSD::Resolver do
 
@@ -30,16 +30,16 @@ describe RXSD::Resolver do
      schema.groups       = [grp1, grp2]
 
      children = schema.children
-     expect(children.include?(elem1)).to be_truthy
-     expect(children.include?(elem2)).to be_truthy
-     expect(children.include?(st1)).to be_truthy
-     expect(children.include?(ct1)).to be_truthy
-     expect(children.include?(at1)).to be_truthy
-     expect(children.include?(at2)).to be_truthy
-     expect(children.include?(at3)).to be_truthy
-     expect(children.include?(atg1)).to be_truthy
-     expect(children.include?(grp1)).to be_truthy
-     expect(children.include?(grp2)).to be_truthy
+     assert children.include?(elem1)
+     assert children.include?(elem2)
+     assert children.include?(st1)
+     assert children.include?(ct1)
+     assert children.include?(at1)
+     assert children.include?(at2)
+     assert children.include?(at3)
+     assert children.include?(atg1)
+     assert children.include?(grp1)
+     assert children.include?(grp2)
   end
 
   it "should return element children" do
@@ -50,8 +50,8 @@ describe RXSD::Resolver do
      elem.complex_type = ct1
 
      children = elem.children
-     expect(children.include?(st1)).to be_truthy
-     expect(children.include?(ct1)).to be_truthy
+     assert children.include?(st1)
+     assert children.include?(ct1)
   end
 
   it "should return complex type children" do
@@ -73,13 +73,13 @@ describe RXSD::Resolver do
      complex_type.sequence  = sequence
 
      children = complex_type.children
-     expect(children.include?(at1)).to be_truthy
-     expect(children.include?(atg1)).to be_truthy
-     expect(children.include?(simple_content)).to be_truthy
-     expect(children.include?(complex_content)).to be_truthy
-     expect(children.include?(choice)).to be_truthy
-     expect(children.include?(group)).to be_truthy
-     expect(children.include?(sequence)).to be_truthy
+     assert children.include?(at1)
+     assert children.include?(atg1)
+     assert children.include?(simple_content)
+     assert children.include?(complex_content)
+     assert children.include?(choice)
+     assert children.include?(group)
+     assert children.include?(sequence)
   end
 
   it "should return simple type children" do
@@ -91,8 +91,8 @@ describe RXSD::Resolver do
      simple_type.restriction = res
 
      children = simple_type.children
-     expect(children.include?(list)).to be_truthy
-     expect(children.include?(res)).to be_truthy
+     assert children.include?(list)
+     assert children.include?(res)
   end
 
   it "should return attribute children" do
@@ -102,7 +102,7 @@ describe RXSD::Resolver do
      att.simple_type = simple_type
 
      children = att.children
-     expect(children.include?(simple_type)).to be_truthy
+     assert children.include?(simple_type)
   end
 
   it "should return attribute group children" do
@@ -114,9 +114,9 @@ describe RXSD::Resolver do
      atg.attribute_groups = [atg1]
 
      children = atg.children
-     expect(children.include?(at1)).to be_truthy
-     expect(children.include?(at2)).to be_truthy
-     expect(children.include?(atg1)).to be_truthy
+     assert children.include?(at1)
+     assert children.include?(at2)
+     assert children.include?(atg1)
   end
 
   it "should return group children" do
@@ -128,8 +128,8 @@ describe RXSD::Resolver do
      grp.sequence = sequence
 
      children = grp.children
-     expect(children.include?(choice)).to be_truthy
-     expect(children.include?(sequence)).to be_truthy
+     assert children.include?(choice)
+     assert children.include?(sequence)
   end
 
   it "should return list children" do
@@ -139,7 +139,7 @@ describe RXSD::Resolver do
      list.simple_type = simple_type
 
      children = list.children
-     expect(children.include?(simple_type)).to be_truthy
+     assert children.include?(simple_type)
   end
 
   it "should return simple content children" do
@@ -151,8 +151,8 @@ describe RXSD::Resolver do
      simple_content.restriction = res
 
      children = simple_content.children
-     expect(children.include?(ext)).to be_truthy
-     expect(children.include?(res)).to be_truthy
+     assert children.include?(ext)
+     assert children.include?(res)
   end
 
   it "should return choice children" do
@@ -171,11 +171,11 @@ describe RXSD::Resolver do
     choice.sequences = [sequence1]
 
     children = choice.children
-    expect(children.include?(grp1)).to be_truthy
-    expect(children.include?(choice1)).to be_truthy
-    expect(children.include?(choice2)).to be_truthy
-    expect(children.include?(choice3)).to be_truthy
-    expect(children.include?(sequence1)).to be_truthy
+    assert children.include?(grp1)
+    assert children.include?(choice1)
+    assert children.include?(choice2)
+    assert children.include?(choice3)
+    assert children.include?(sequence1)
   end
 
   it "should return complex content children" do
@@ -187,8 +187,8 @@ describe RXSD::Resolver do
      complex_content.restriction = res
 
      children = complex_content.children
-     expect(children.include?(ext)).to be_truthy
-     expect(children.include?(res)).to be_truthy
+     assert children.include?(ext)
+     assert children.include?(res)
   end
 
   it "should return sequence children" do
@@ -207,11 +207,11 @@ describe RXSD::Resolver do
     sequence.sequences = [sequence1]
 
     children = sequence.children
-    expect(children.include?(grp1)).to be_truthy
-    expect(children.include?(choice1)).to be_truthy
-    expect(children.include?(choice2)).to be_truthy
-    expect(children.include?(choice3)).to be_truthy
-    expect(children.include?(sequence1)).to be_truthy
+    assert children.include?(grp1)
+    assert children.include?(choice1)
+    assert children.include?(choice2)
+    assert children.include?(choice3)
+    assert children.include?(sequence1)
   end
 
   it "should return extension children" do
@@ -229,11 +229,11 @@ describe RXSD::Resolver do
     extension.attribute_groups = [atg1]
 
     children = extension.children
-    expect(children.include?(grp1)).to be_truthy
-    expect(children.include?(choice1)).to be_truthy
-    expect(children.include?(sequence1)).to be_truthy
-    expect(children.include?(at1)).to be_truthy
-    expect(children.include?(atg1)).to be_truthy
+    assert children.include?(grp1)
+    assert children.include?(choice1)
+    assert children.include?(sequence1)
+    assert children.include?(at1)
+    assert children.include?(atg1)
   end
 
   it "should return restriction children" do
@@ -253,12 +253,12 @@ describe RXSD::Resolver do
     restriction.simple_type = st1
 
     children = restriction.children
-    expect(children.include?(grp1)).to be_truthy
-    expect(children.include?(choice1)).to be_truthy
-    expect(children.include?(sequence1)).to be_truthy
-    expect(children.include?(at1)).to be_truthy
-    expect(children.include?(atg1)).to be_truthy
-    expect(children.include?(st1)).to be_truthy
+    assert children.include?(grp1)
+    assert children.include?(choice1)
+    assert children.include?(sequence1)
+    assert children.include?(at1)
+    assert children.include?(atg1)
+    assert children.include?(st1)
   end
 
   ##########
@@ -299,11 +299,11 @@ describe RXSD::Resolver do
      element2.resolve(node_objs)
      element3.resolve(node_objs)
 
-     expect(element1.type).to eq(String)
-     expect(element2.type).to eq(simple_type)
-     expect(element2.ref).to  eq(element1)
-     expect(element3.type).to eq(complex_type)
-     expect(element3.substitutionGroup).to  eq(element1)
+     assert_equal String, element1.type
+     assert_equal simple_type, element2.type
+     assert_equal element1, element2.ref
+     assert_equal complex_type, element3.type
+     assert_equal element1, element3.substitutionGroup
   end
 
   it "should resolve complex type relationships" do
@@ -335,9 +335,9 @@ describe RXSD::Resolver do
      attr1.resolve(node_objs)
      attr2.resolve(node_objs)
 
-     expect(attr1.type).to eq(XSDInteger)
-     expect(attr2.type).to eq(simple_type)
-     expect(attr2.ref).to eq(attr1)
+     assert_equal XSDInteger, attr1.type
+     assert_equal simple_type, attr2.type
+     assert_equal attr1, attr2.ref
   end
 
   it "should resolve attribute group relationships" do
@@ -356,7 +356,7 @@ describe RXSD::Resolver do
      attr_grp1.resolve(node_objs)
      attr_grp2.resolve(node_objs)
 
-     expect(attr_grp2.ref).to eq(attr_grp1)
+     assert_equal attr_grp1, attr_grp2.ref
   end
 
   it "should resolve group relationships" do
@@ -373,7 +373,7 @@ describe RXSD::Resolver do
      grp1.resolve(node_objs)
      grp2.resolve(node_objs)
 
-     expect(grp2.ref).to eq(grp1)
+     assert_equal grp1, grp2.ref
   end
 
   it "should resolve list relationships" do
@@ -399,8 +399,8 @@ describe RXSD::Resolver do
      list1.resolve(node_objs)
      list2.resolve(node_objs)
 
-     expect(list1.itemType).to eq(XSDFloat)
-     expect(list2.itemType).to eq(simple_type3)
+     assert_equal XSDFloat, list1.itemType
+     assert_equal simple_type3, list2.itemType
   end
 
   it "should resolve simple content relationships" do
@@ -467,9 +467,9 @@ describe RXSD::Resolver do
      extension2.resolve(node_objs)
      extension3.resolve(node_objs)
 
-     expect(extension1.base).to eq(Char)
-     expect(extension2.base).to eq(simple_type1)
-     expect(extension3.base).to eq(complex_type1)
+     assert_equal Char, extension1.base
+     assert_equal simple_type1, extension2.base
+     assert_equal complex_type1, extension3.base
   end
 
   it "should resolve restriction relationships" do
@@ -516,9 +516,9 @@ describe RXSD::Resolver do
      restriction2.resolve(node_objs)
      restriction3.resolve(node_objs)
 
-     expect(restriction1.base).to eq(Char)
-     expect(restriction2.base).to eq(simple_type1)
-     expect(restriction3.base).to eq(complex_type1)
+     assert_equal Char, restriction1.base
+     assert_equal simple_type1, restriction2.base
+     assert_equal complex_type1, restriction3.base
   end
 
 
@@ -570,21 +570,21 @@ describe RXSD::Resolver do
      schema = Parser.parse_xsd :raw => data
      node_objs = Resolver.node_objects schema
 
-     expect(node_objs.values.flatten.size).to eq(26)
-     expect(node_objs[Schema].size).to eq(1)
-     expect(node_objs[ComplexType].size).to eq(3)
-     expect(node_objs[Element].size).to eq(6)
-     expect(node_objs[Attribute].size).to eq(2)
-     expect(node_objs[AttributeGroup].size).to eq(1)
-     expect(node_objs[Choice].size).to eq(3)
-     expect(node_objs[ComplexContent].size).to eq(2)
-     expect(node_objs[Extension].size).to eq(1)
-     expect(node_objs[Group].size).to eq(1)
-     expect(node_objs[List].size).to eq(2)
-     expect(node_objs[Restriction].size).to eq(1)
-     expect(node_objs[Sequence].size).to eq(1)
-     expect(node_objs[SimpleContent].size).to eq(0)
-     expect(node_objs[SimpleType].size).to eq(2)
+     assert_equal 26, node_objs.values.flatten.size
+     assert_equal 1, node_objs[Schema].size
+     assert_equal 3, node_objs[ComplexType].size
+     assert_equal 6, node_objs[Element].size
+     assert_equal 2, node_objs[Attribute].size
+     assert_equal 1, node_objs[AttributeGroup].size
+     assert_equal 3, node_objs[Choice].size
+     assert_equal 2, node_objs[ComplexContent].size
+     assert_equal 1, node_objs[Extension].size
+     assert_equal 1, node_objs[Group].size
+     assert_equal 2, node_objs[List].size
+     assert_equal 1, node_objs[Restriction].size
+     assert_equal 1, node_objs[Sequence].size
+     assert_equal 0, node_objs[SimpleContent].size
+     assert_equal 2, node_objs[SimpleType].size
   end
 
   it "should correctly resolve nodes" do
@@ -602,8 +602,8 @@ describe RXSD::Resolver do
      schema = Parser.parse_xsd :raw => data
      #node_objs = Resolver.resolve_nodes schema # XXX don't like doing it this way but this is invoked as part of Parser.parse_xsd, and shouldn't be invoked twice on one data set
 
-     expect(schema.complex_types[0]).to eq(schema.elements[1].type)
-     expect(schema.elements[0]).to eq(schema.complex_types[0].choice.elements[1].ref)
+     assert_equal schema.elements[1].type, schema.complex_types[0]
+     assert_equal schema.complex_types[0].choice.elements[1].ref, schema.elements[0]
   end
 
 end

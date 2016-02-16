@@ -1,6 +1,5 @@
 require 'rxsd'
 require 'libxml'
-require 'pry'
 
 include RXSD
 include RXSD::XSD

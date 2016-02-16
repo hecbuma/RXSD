@@ -19,7 +19,7 @@ describe RXSD::Loader do
      expect(data).to eq("foobar\n")
   end
 
-  fcontext 'when there is an included file' do
+  context 'when there is an included file' do
     let(:uri) { "file://#{Dir.pwd}/spec/support/base.xsd" }
     subject(:loaded) { described_class.load(uri) }
 

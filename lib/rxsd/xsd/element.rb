@@ -94,7 +94,7 @@ class Element
     unless @type.nil?
       builtin  = Parser.parse_builtin_type @type
       simple   = node_objs[SimpleType].find  { |no| no.name == @type }
-      complex  = node_objs[ComplexType].find { |no| no.name == @type }
+      complex  = node_objs[ComplexType].find { |no| no.name == sanitized_type }
       if !builtin.nil?
         @type = builtin
       elsif !simple.nil?
@@ -111,6 +111,12 @@ class Element
     unless @substitutionGroup.nil?
       @substitutionGroup = node_objs[Element].find { |no| no.name == @substitutionGroup }
     end
+  end
+
+  # for complex types that have namespace prefixes remove the prefix otherwise it won't be able to find the complex
+  # type by name.
+  def sanitized_type
+    return @type.index(":").nil? ? @type : @type.split(":")[1]
   end
 
   # convert element to class builder

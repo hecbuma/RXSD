@@ -11,8 +11,8 @@ module XSD
 class Element
 
   # element attribute values
-  attr_accessor :id, :name, :type, 
-                :nillable, :abstract, :ref, 
+  attr_accessor :id, :name, :type,
+                :nillable, :abstract, :ref,
                 :substitutionGroup, :form, :maxOccurs,
                  :minOccurs, :default, :fixed
 
@@ -65,13 +65,13 @@ class Element
        element.ref              = ref
 
        element.substitutionGroup  = node.attrs["substitutionGroup"]
-       element.form             = node.attrs.has_key?("form") ? 
+       element.form             = node.attrs.has_key?("form") ?
                                      node.attrs["form"] :
                                       node.root.attrs["elementFormDefault"]
 
-       element.maxOccurs  = node.attrs.has_key?("maxOccurs") ? 
+       element.maxOccurs  = node.attrs.has_key?("maxOccurs") ?
                                 (node.attrs["maxOccurs"] == "unbounded" ? "unbounded" : node.attrs["maxOccurs"].to_i) : 1
-       element.minOccurs  = node.attrs.has_key?("minOccurs") ? 
+       element.minOccurs  = node.attrs.has_key?("minOccurs") ?
                                 (node.attrs["minOccurs"] == "unbounded" ? "unbounded" : node.attrs["minOccurs"].to_i) : 1
 
      else
@@ -107,7 +107,7 @@ class Element
     unless @ref.nil?
       @ref = node_objs[Element].find { |no| no.name == @ref }
     end
-    
+
     unless @substitutionGroup.nil?
       @substitutionGroup = node_objs[Element].find { |no| no.name == @substitutionGroup }
     end
@@ -124,7 +124,7 @@ class Element
      unless defined? @class_builder
        @class_builder = nil
 
-       if !@ref.nil? 
+       if !@ref.nil?
           @class_builder = @ref.to_class_builder
 
        elsif !@type.nil?

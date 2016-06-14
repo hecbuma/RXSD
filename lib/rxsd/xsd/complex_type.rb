@@ -7,14 +7,14 @@ module RXSD
 module XSD
 
 # XSD ComplexType defintion
-# http://www.w3schools.com/Schema/el_simpletype.asp 
+# http://www.w3schools.com/Schema/el_simpletype.asp
 class ComplexType
 
   # complex type attribute values
   attr_accessor :id, :name, :abstract, :mixed
 
   # complex type children
-  attr_accessor :attributes, :attribute_groups, 
+  attr_accessor :attributes, :attribute_groups,
                 :simple_content, :complex_content,
                 :choice, :group, :sequence
 
@@ -42,7 +42,7 @@ class ComplexType
      complexType = ComplexType.new
      complexType.parent = node.parent.related
      node.related = complexType
-      
+
      # TODO complexType attributes: | block, final, anyAttributes
 
      complexType.id       = node.attrs['id']
@@ -55,7 +55,7 @@ class ComplexType
        complexType.mixed = false
      end
 
-     # TODO complexType children: | all, anyAttribute, 
+     # TODO complexType children: | all, anyAttribute,
      complexType.attributes       = node.children_objs Attribute
      complexType.attribute_groups = node.children_objs AttributeGroup
      complexType.simple_content   = node.child_obj SimpleContent
@@ -85,7 +85,7 @@ class ComplexType
          #@class_builder = ClassBuilder.new
       end
 
-      @class_builder.klass_name = @name.camelize unless @name.nil?
+      @class_builder.klass_name = @name.gsub("-", "_DASH_").camelize unless @name.nil?
 
       @attributes.each { |att|
          @class_builder.attribute_builders.push att.to_class_builder
@@ -101,7 +101,7 @@ class ComplexType
             @class_builder.attribute_builders.push gcb
           }
       end
-   
+
       if !@choice.nil?
           @choice.to_class_builders.each { |ccb|
             @class_builder.attribute_builders.push ccb

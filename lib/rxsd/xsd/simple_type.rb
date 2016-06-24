@@ -7,7 +7,7 @@ module RXSD
 module XSD
 
 # XSD SimpleType defintion
-# http://www.w3schools.com/Schema/el_simpletype.asp 
+# http://www.w3schools.com/Schema/el_simpletype.asp
 class SimpleType
 
   # simple type attribute values
@@ -43,7 +43,7 @@ class SimpleType
      simpleType.parent = node.parent.related
      node.related = simpleType
 
-     # TODO simpleType attributes: | anyAttr 
+     # TODO simpleType attributes: | anyAttr
      simpleType.id   = node.attrs["id"]
      simpleType.name = node.attrs["name"]
 
@@ -82,7 +82,7 @@ class SimpleType
       end
     end
 
-    @class_builder.klass_name = @name.camelize unless @name.nil?
+    @class_builder.klass_name = @name.gsub("-", "_DASH_").camelize unless @name.nil?
     return @class_builder
   end
 

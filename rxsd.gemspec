@@ -1,5 +1,5 @@
 GEM_NAME="rxsd"
-PKG_VERSION='0.5.2'
+PKG_VERSION='0.5.3'
 
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
